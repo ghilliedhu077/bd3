@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
   
   <style>
-    /* CSS 변수를 활용한 디자인 시스템 구축 */
+    /* CSS 변수를 활용한 고품격 디자인 시스템 */
     :root {
       --color-obsidian: #0a0b0d;
       --color-obsidian-light: #121316;
@@ -430,7 +430,6 @@
       margin: 24px auto 0;
     }
 
-    /* 반응형 그리드 설계 */
     .features-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -519,7 +518,6 @@
       transform: translateX(4px);
     }
 
-    /* 스페셜 와이드 카드 스타일링 */
     .special-card {
       background: linear-gradient(to right bottom, var(--color-obsidian), rgba(161, 28, 28, 0.1), var(--color-obsidian));
       border: 1px solid rgba(200, 162, 97, 0.3);
@@ -596,7 +594,7 @@
     }
 
     .interactive-wrap {
-      max-width: 600px;
+      max-width: 700px;
       margin: 0 auto;
     }
 
@@ -616,21 +614,23 @@
     .dice-box {
       background-color: rgba(18, 19, 22, 0.6);
       border: 1px solid rgba(200, 162, 97, 0.2);
-      padding: 40px;
+      padding: 40px 24px;
       border-radius: 8px;
       display: inline-flex;
       flex-direction: column;
       align-items: center;
-      min-width: 300px;
+      width: 100%;
+      max-width: 550px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
     .dice-container {
       position: relative;
-      width: 120px;
-      height: 120px;
+      width: 130px;
+      height: 130px;
       cursor: pointer;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
+      perspective: 1000px; /* 3D 효과 부여 */
     }
 
     .dice-svg {
@@ -638,10 +638,12 @@
       height: 100%;
       color: var(--color-gold);
       transition: var(--transition-smooth);
+      filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
     }
 
     .dice-container:hover .dice-svg {
       color: var(--color-gold-light);
+      filter: drop-shadow(0 0 12px rgba(200, 162, 97, 0.3));
     }
 
     .dice-number {
@@ -650,7 +652,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-family: var(--font-title);
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 800;
       color: var(--color-gold);
       user-select: none;
@@ -661,33 +663,63 @@
       color: var(--color-gold-light);
     }
 
-    /* 주사위 회전 애니메이션 */
-    @keyframes roll {
-      0% { transform: rotate(0deg) scale(1); }
-      30% { transform: rotate(360deg) scale(1.15); }
-      70% { transform: rotate(720deg) scale(0.9); }
-      100% { transform: rotate(1080deg) scale(1); }
+    /* 3D 주사위 회전 + 흔들림 복합 시네마틱 애니메이션 */
+    @keyframes roll3d {
+      0% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
+        filter: drop-shadow(0 0 5px rgba(200, 162, 97, 0.2));
+      }
+      15% {
+        transform: rotateX(120deg) rotateY(-90deg) rotateZ(45deg) scale(1.15);
+        filter: drop-shadow(0 0 20px var(--color-crimson));
+      }
+      40% {
+        transform: rotateX(360deg) rotateY(180deg) rotateZ(-90deg) scale(0.85);
+        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
+      }
+      70% {
+        transform: rotateX(720deg) rotateY(540deg) rotateZ(180deg) scale(1.2);
+        filter: drop-shadow(0 0 30px var(--color-gold));
+      }
+      85% {
+        transform: rotateX(900deg) rotateY(810deg) rotateZ(270deg) scale(0.95);
+        filter: drop-shadow(0 0 15px var(--color-gold-light));
+      }
+      100% {
+        transform: rotateX(1080deg) rotateY(1080deg) rotateZ(360deg) scale(1);
+        filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.6));
+      }
     }
 
     .dice-rolling {
-      animation: roll 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: roll3d 1.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
     .dice-result {
       margin-top: 24px;
-      min-height: 60px;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: var(--transition-smooth);
+      width: 100%;
     }
 
     .result-msg {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: bold;
       color: var(--color-gold);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
     }
 
     .result-sub {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--color-parchment-dark);
+      line-height: 1.7;
+      max-width: 460px;
+      padding: 0 10px;
     }
 
     .cta {
@@ -978,7 +1010,6 @@
   <!-- 가상 뮤직 플레이어 -->
   <div class="bgm-player" id="music-player">
     <div class="vinyl" id="vinyl-disk">
-      <!-- 음반 모양 아이콘 (SVG) -->
       <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"></circle>
         <circle cx="12" cy="12" r="3"></circle>
@@ -989,9 +1020,7 @@
       <p class="bgm-title" id="bgm-title">Main Theme (Orchestra)</p>
     </div>
     <button onclick="toggleMusic()" class="btn-play-toggle" aria-label="음악 재생/정지 토글">
-      <!-- 재생/정지 전환 아이콘 (BGM 제어) -->
       <svg id="music-btn-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <!-- 재생 상태 기본 아이콘: 일시정지 (Pause) -->
         <rect x="6" y="4" width="4" height="16"></rect>
         <rect x="14" y="4" width="4" height="16"></rect>
       </svg>
@@ -1020,7 +1049,6 @@
       </div>
     </div>
     
-    <!-- 모바일 메뉴 아코디언 -->
     <div id="mobile-menu" class="mobile-nav">
       <a href="#about" onclick="toggleMobileMenu()">THE STORY</a>
       <a href="#features" onclick="toggleMobileMenu()">THE EXPERIENCE</a>
@@ -1065,7 +1093,6 @@
     <div class="container">
       <div class="about-header">
         <div class="about-icon">
-          <!-- 도우미 물음표 아이콘 (SVG) -->
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
             <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
@@ -1116,7 +1143,6 @@
           <div class="feature-card">
             <div>
               <div class="card-icon">
-                <!-- 브랜치 구조 아이콘 (SVG) -->
                 <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="6" y1="3" x2="6" y2="15"></line>
                   <circle cx="18" cy="6" r="3"></circle>
@@ -1143,7 +1169,6 @@
           <div class="feature-card">
             <div>
               <div class="card-icon">
-                <!-- 나침반 아이콘 (SVG) -->
                 <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"></circle>
                   <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
@@ -1168,7 +1193,6 @@
           <div class="feature-card">
             <div>
               <div class="card-icon">
-                <!-- 유저 연합 아이콘 (SVG) -->
                 <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                   <circle cx="9" cy="7" r="4"></circle>
@@ -1195,7 +1219,6 @@
           <div class="feature-card">
             <div>
               <div class="card-icon">
-                <!-- 음표 아이콘 (SVG) -->
                 <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M9 18V5l12-2v13"></path>
                   <circle cx="6" cy="18" r="3"></circle>
@@ -1216,7 +1239,7 @@
           </div>
         </div>
 
-        <!-- 카드 5: 평생 소장 풀패키지 (와이드 스페셜 구조) -->
+        <!-- 카드 5: 평생 소장 풀패키지 -->
         <div class="col-span-6">
           <div class="feature-card special-card">
             <div class="special-content">
@@ -1239,6 +1262,7 @@
     </div>
   </section>
 
+  <!-- Section 3.5: Interactive 주사위 파트 -->
   <section id="interactive" class="interactive">
     <div class="container">
       <div class="interactive-wrap">
@@ -1283,7 +1307,6 @@
     <div class="container" style="position: relative; z-index: 10;">
       <div class="cta-decor">
         <span class="decor-line"></span>
-        <!-- 방패 아이콘 (SVG) -->
         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
         </svg>
@@ -1298,6 +1321,130 @@
 
       <div>
         <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-cta">
-          <span>평생 소장하여 모험 가입 (Steam)</span>
-          <!-- 외부링크 아이콘 (SVG) -->
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          <span>평생 소장하여 모험 개시 (Steam)</span>
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" y2="3"></line>
+          </svg>
+        </a>
+        <p class="cta-tip">※ 추가 정기 월정액 결제 및 인게임 무작위 확률형 뽑기가 전혀 없습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h4>BALDUR'S GATE III BRANDING</h4>
+          <p>"남이 만든 결말은 지루하니까. 이제 당신이 주인공이 될 차례."</p>
+        </div>
+        <div class="footer-links">
+          <a href="#">이용약관</a>
+          <span class="footer-divider">|</span>
+          <a href="#">개인정보처리방침</a>
+          <span class="footer-divider">|</span>
+          <a href="#">스토리 가이드 안내</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Larian Studios. All rights reserved. 본 웹사이트는 비주얼 기획안에 근거해 개발된 온전한 순수 프론트엔드 포트폴리오 작업물입니다.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 순수 바닐라 자바스크립트 비즈니스 로직 -->
+  <script>
+    // 모바일 햄버거 메뉴 토글 기능
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      if (menu.style.display === 'block') {
+        menu.style.display = 'none';
+      } else {
+        menu.style.display = 'block';
+      }
+    }
+
+    // 운명의 D20 주사위 롤링 및 스토리텔링 엔진
+    let isRolling = false;
+    
+    function rollDice() {
+      if (isRolling) return;
+      isRolling = true;
+
+      const diceSvg = document.getElementById('dice-svg');
+      const diceNum = document.getElementById('dice-number');
+      const diceMsg = document.getElementById('dice-message');
+      const diceSubMsg = document.getElementById('dice-sub-message');
+
+      // 애니메이션 클래스 트리거 및 초기화
+      diceSvg.classList.remove('dice-rolling');
+      void diceSvg.offsetWidth; // 리플로우 트리거하여 애니메이션 초기화 보장
+      diceSvg.classList.add('dice-rolling');
+      
+      diceNum.textContent = "?";
+      diceMsg.textContent = "운명의 주사위가 어둠 속을 구르고 있습니다...";
+      diceSubMsg.textContent = "우주의 주사위가 굴러가며 새로운 가능성의 궤적을 빚어냅니다.";
+      diceMsg.style.color = "var(--color-gold)";
+
+      // 1.3초 시네마틱 롤링 대기
+      setTimeout(() => {
+        const rollResult = Math.floor(Math.random() * 20) + 1;
+        diceNum.textContent = rollResult;
+        diceSvg.classList.remove('dice-rolling');
+
+        // 결괏값 스케일 판단 및 멀티 엔딩/대안 암시 분기문
+        if (rollResult === 20) {
+          diceMsg.textContent = `🎲 [대성공 - CRITICAL 20] 완벽한 전설적 돌파`;
+          diceSubMsg.innerHTML = "<strong>당신의 호소력 짙은 설득이 경비 대장의 영혼을 뒤흔들었습니다.</strong> 그는 눈물을 흘리며 요새 문을 활짝 열고 군수품 열쇠까지 넘겨줍니다.<br><br><em>💡 다른 길의 암시:</em> 설령 이 주사위가 1이 나와 문이 굳게 잠겼더라도, 요새 벽 뒤 무너진 틈새를 통해 도약(Jump)해 침투하거나 아예 지하 하수구 깊숙한 곳에서 조용히 걸어 올라오는 기발한 대안적 침투로가 존재했을 것입니다.";
+          diceMsg.style.color = "#10b981"; // 에메랄드 성공톤
+        } 
+        else if (rollResult >= 15) {
+          diceMsg.textContent = `🎲 [성공 - 판정값 ${rollResult}] 지혜로운 평화 타협`;
+          diceSubMsg.innerHTML = "<strong>수비대장이 가벼운 의심을 거두고 당신의 영웅적인 목적에 수긍했습니다.</strong> 군용 통행증을 교부받아 안전하게 성문을 관통합니다.<br><br><em>💡 다른 길의 암시:</em> 말로 해결하지 않고, 소매치기 기술로 대장의 허리춤에서 마법 열쇠를 몰래 훔쳐 통과하거나 근처 술집에서 다른 병사를 포섭해 문을 열어두라고 거래를 제안하는 등 다른 지략도 넘쳐납니다.";
+          diceMsg.style.color = "var(--color-gold-light)";
+        } 
+        else if (rollResult >= 8) {
+          diceMsg.textContent = `🎲 [부분 성공 - 판정값 ${rollResult}] 타협과 대가 지불`;
+          diceSubMsg.innerHTML = "<strong>대장은 순순히 성문을 열지 않지만 약간의 통행 금화(Gold)를 요구합니다.</strong> 조금 쓰라린 지출이지만 무난하게 진입합니다.<br><br><em>💡 다른 길의 암시:</em> 금화가 아깝다면 근처 덤불에 있는 '말하는 다람쥐'를 찾아가 지름길을 물어보거나, 야밤에 침묵 마법을 걸고 경비들을 한 명씩 기절시킨 뒤 공짜로 통과하는 전략적 선택도 준비되어 있습니다.";
+          diceMsg.style.color = "var(--color-parchment)";
+        } 
+        else if (rollResult === 1) {
+          diceMsg.textContent = `🎲 [대실패 - CRITICAL FUMBLE 1] 참사에서 피어나는 기적`;
+          diceSubMsg.innerHTML = "<strong>말실수로 정체가 폭로되어 성 전체에 비상 종이 울립니다!</strong> 군대가 출동하며 전면 전투가 시작됩니다.<br><br><em>💡 다른 길의 암시:</em> 대실패로 인한 전면전조차 완벽한 모험입니다. 야생 동물로 변신해 쥐구멍으로 은밀히 도망치거나, 요새 천장의 거대한 상들리에 마법 사슬을 쏘아 떨어뜨려 적들을 일망타진하는 등 역전의 실마리는 늘 아군에게 쥐어져 있습니다.";
+          diceMsg.style.color = "var(--color-crimson-light)";
+        } 
+        else {
+          diceMsg.textContent = `🎲 [실패 - 판정값 ${rollResult}] 가로막힌 전면 통제`;
+          diceSubMsg.innerHTML = "<strong>경비 대장이 비웃으며 칼날을 세웁니다. 설득은 통하지 않고 정문 통과가 철저히 막혔습니다.</strong><br><br><em>💡 다른 길의 암시:</em> 절망하지 마세요. 정문이 거절당했다는 것은 당신이 절벽 위 썩은 발판을 무너뜨려 비밀 우회로를 찾거나, 투명화 물약을 마시고 유유히 대장 옆을 성큼성큼 통과하는 완전히 새로운 장르의 미션을 시작할 타이밍이라는 뜻입니다.";
+          diceMsg.style.color = "var(--color-parchment-dark)";
+        }
+
+        isRolling = false;
+      }, 1300);
+    }
+
+    // 가상 배경 음악 플레이어 제어 기능
+    let isMusicPlaying = true;
+    const vinylDisk = document.getElementById('vinyl-disk');
+    const bgmTitle = document.getElementById('bgm-title');
+    const musicBtnSvg = document.getElementById('music-btn-svg');
+
+    function toggleMusic() {
+      isMusicPlaying = !isMusicPlaying;
+      if (isMusicPlaying) {
+        vinylDisk.style.animationPlayState = 'running';
+        bgmTitle.textContent = "Main Theme (Orchestra)";
+        // Pause 아이콘 상태로 변경 (재생 중이므로 클릭 시 멈춘다는 직관적 매칭)
+        musicBtnSvg.innerHTML = `<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>`;
+      } else {
+        vinylDisk.style.animationPlayState = 'paused';
+        bgmTitle.textContent = "Music Paused";
+        // Play 아이콘 상태로 변경
+        musicBtnSvg.innerHTML = `<polygon points="5 3 19 12 5 21 5 3"></polygon>`;
+      }
+    }
+  </script>
+</body>
+</html>
