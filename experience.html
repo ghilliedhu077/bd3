@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>발더스 게이트 3 - 살아있는 관계와 시스템</title>
+  
+  <!-- 구글 폰트 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
+  
+  <!-- 구글 폰트 링크 아래에 삽입 -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 글로벌 트랜지션 로더 -->
+  <div class="screen-loader" id="screen-loader">
+    <svg class="loader-rune" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="50" cy="50" r="40" stroke-dasharray="10 5" />
+      <polygon points="50,15 80,75 20,75" stroke-linejoin="round" />
+      <polygon points="50,85 80,25 20,25" stroke-linejoin="round" />
+      <circle cx="50" cy="50" r="10" />
+    </svg>
+  </div>
+
+  <!-- 가상 뮤직 플레이어 -->
+  <div class="bgm-player" id="music-player">
+    <div class="vinyl" id="vinyl-disk">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+    </div>
+    <div class="bgm-info">
+      <p class="bgm-tag">BALDUR'S GATE III</p>
+      <p class="bgm-title" id="bgm-title">Main Theme (Orchestra)</p>
+    </div>
+    <button onclick="toggleMusic()" class="btn-play-toggle" aria-label="음악 재생/정지 토글">
+      <svg id="music-btn-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="6" y="4" width="4" height="16"></rect>
+        <rect x="14" y="4" width="4" height="16"></rect>
+      </svg>
+    </button>
+  </div>
+
+  <!-- 글로벌 헤더 (GNB) -->
+  <header>
+    <div class="container">
+      <div class="header-wrap">
+        <a href="index.html" class="logo">
+          BALDUR'S GATE III
+        </a>
+        
+        <nav id="main-nav">
+          <a href="index.html">HOME</a>
+          <a href="story.html">THE STORY</a>
+          <a href="experience.html" class="active">THE EXPERIENCE</a>
+          <a href="roll.html">ROLL THE DICE</a>
+          <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="btn-header-cta">PLAY NOW</a>
+        </nav>
+        
+        <button onclick="toggleMobileMenu()" class="menu-toggle" aria-label="모바일 메뉴 열기/닫기">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <!-- 모바일 메뉴 드롭다운 -->
+    <div id="mobile-menu" class="mobile-nav">
+      <a href="index.html">HOME</a>
+      <a href="story.html">THE STORY</a>
+      <a href="experience.html" class="active">THE EXPERIENCE</a>
+      <a href="roll.html">ROLL THE DICE</a>
+      <a href="https://store.steampowered.com" target="_blank" rel="noopener" style="color: var(--color-gold); font-weight: bold;">PLAY NOW</a>
+    </div>
+  </header>
+
+  <!-- EXPERIENCE 내용 -->
+  <main>
+    <section class="experience-section">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-tag">Deep Mechanics</span>
+          <h2 class="section-title">가치: 살아있는 관계와 시스템</h2>
+          <div class="title-line"></div>
+        </div>
+
+        <div class="features-grid">
+          <!-- 강점 카드 1: 나비효과 -->
+          <div class="col-span-3">
+            <div class="feature-card">
+              <div>
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="6" y1="3" x2="6" y2="15"></line>
+                    <circle cx="18" cy="6" r="3"></circle>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <path d="M18 9a9 9 0 0 1-9 9"></path>
+                  </svg>
+                </div>
+                <p class="card-tag">Butterfly Effect</p>
+                <h3>나비효과가 지배하는 세상</h3>
+                <p>당신이 지나가던 도중 마을 아이에게 베푼 사소한 사탕 하나가 아득한 시간이 지난 뒤, 그가 자라 거대한 제국의 요직에 앉아 아군 부대를 대가 없이 보호하는 기적의 서사로 회귀할 수 있습니다.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 강점 카드 2: 사운드트랙 -->
+          <div class="col-span-3">
+            <div class="feature-card">
+              <div>
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18V5l12-2v13"></path>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <circle cx="18" cy="16" r="3"></circle>
+                  </svg>
+                </div>
+                <p class="card-tag">Soundtrack</p>
+                <h3>모든 순간 흐르는 서사시 BGM</h3>
+                <p>불빛 하나 없는 음산한 고대 동굴에서 느껴지는 현악기의 긴장된 속주와, 보스 조우 시 성스럽게 울리는 소프라노 합창 오케스트라가 감각을 빈틈없이 채워 판타지 영화 속에 완전 거주하는 느낌을 선사합니다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 핵심 영웅 동료 쇼케이스 -->
+        <div class="companions-showcase">
+          <h3 class="section-title" style="font-size: 24px; text-align: center; margin-bottom: 30px;">여정을 장식할 세 명의 기괴한 조력자</h3>
+          
+          <div class="companion-tabs">
+            <button class="tab-btn active" onclick="showCompanion('astarion')">아스타리온 (Astarion)</button>
+            <button class="tab-btn" onclick="showCompanion('shadowheart')">섀도하트 (Shadowheart)</button>
+            <button class="tab-btn" onclick="showCompanion('gale')">게일 (Gale)</button>
+          </div>
+
+          <div class="companion-content" id="companion-viewer">
+            <div class="companion-details">
+              <h4 class="companion-name" id="comp-name">아스타리온 (Astarion)</h4>
+              <p class="companion-class" id="comp-class">하이 엘프 로그 / 뱀파이어 스폰</p>
+              <p class="companion-desc" id="comp-desc">수백 년간 어둠의 군주 밑에서 수동적인 인형으로 사육당하던 뱀파이어 노예였습니다. 태양 아래 자유를 비로소 되찾은 뒤, 자신의 나약함을 증오하고 강인한 힘과 잔인한 자유를 소망합니다.</p>
+              <p class="companion-quote" id="comp-quote">"소중한 사람들을 위해서라면, 가끔은 위대한 악마조차 되는 법이지."</p>
+            </div>
+            <div class="companion-visual" id="comp-visual" style="background-image: url('https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=400&auto=format&fit=crop');"></div>
+          </div>
+        </div>
+
+        <!-- 선택 딜레마 시뮬레이터 -->
+        <div class="dilemma-section">
+          <div class="dilemma-box">
+            <span class="card-tag">Crucial Moral Dilemma</span>
+            <h4>상황 시뮬레이션: 마녀가 지배하는 숲</h4>
+            <p class="dilemma-desc">당신은 불치병에 걸린 아내를 고칠 비법을 쥐고 있는 마녀 에텔을 생포했습니다. 하지만 그녀는 교활하며 살려달라 호소하는 동시에, 기적의 영약을 보상으로 제안합니다. 당신은 어떻게 하시겠습니까?</p>
+            
+            <div class="dilemma-choices">
+              <div class="choice-card" onclick="revealDilemmaResult('mercy')">
+                <span class="choice-num">OPTION 1</span>
+                <p class="choice-title">영약을 넘겨받고 마녀의 평생 방치 거래에 수긍한다.</p>
+                <div class="choice-result-text" id="result-mercy">
+                  <strong>체험 결과:</strong> 아내는 기적처럼 부활하지만 마녀가 근처 영아들을 제물로 삼는 기괴한 비극이 이어집니다. 당신은 후손들의 격렬한 원망을 받으며 죄책감의 감옥에 빠지게 됩니다.
+                </div>
+              </div>
+              <div class="choice-card" onclick="revealDilemmaResult('kill')">
+                <span class="choice-num">OPTION 2</span>
+                <p class="choice-title">거래를 과감히 거부하고 마녀를 완전 참수하여 정의를 실현한다.</p>
+                <div class="choice-result-text" id="result-kill">
+                  <strong>체험 결과:</strong> 숲의 역겨운 악의 고리는 정의롭게 끊어냈지만, 당신은 아내를 끝내 잃어 평생 가슴 아픈 고통과 고독 속에 밤하늘만을 조용히 응시하게 됩니다.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- 글로벌 푸터 -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h4>BALDUR'S GATE III</h4>
+          <p>"남이 만든 결말은 지루하니까. 이제 당신이 주인공이 될 차례."</p>
+        </div>
+        <div class="footer-links">
+          <a href="#">이용약관</a>
+          <span class="footer-divider">|</span>
+          <a href="#">개인정보처리방침</a>
+          <span class="footer-divider">|</span>
+          <a href="#">여정 지원 가이드</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Larian Studios. All rights reserved. 이 작업물은 명작 정통 판타지 스토리텔링의 한계를 다각화하기 위해 고안된 MPA 가상 웹포트폴리오입니다.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 화면 페이드인 트랜지션 처리
+    window.addEventListener('DOMContentLoaded', () => {
+      const loader = document.getElementById('screen-loader');
+      setTimeout(() => {
+        loader.classList.add('hidden');
+      }, 150);
+    });
+
+    // 모바일 메뉴 제어
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // 동료 정보 DB
+    const companionData = {
+      astarion: {
+        name: "아스타리온 (Astarion)",
+        class: "하이 엘프 로그 / 뱀파이어 스폰",
+        desc: "수백 년간 어둠의 군주 밑에서 수동적인 인형으로 사육당하던 뱀파이어 노예였습니다. 태양 아래 자유를 비로소 되찾은 뒤, 자신의 나약함을 증오하고 강인한 힘과 잔인한 자유를 소망합니다.",
+        quote: "\"소중한 사람들을 위해서라면, 가끔은 위대한 악마조차 되는 법이지.\"",
+        image: "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=400&auto=format&fit=crop"
+      },
+      shadowheart: {
+        name: "섀도하트 (Shadowheart)",
+        class: "하프 엘프 클레릭 / 어둠의 여신 샤의 신도",
+        desc: "신성한 여신의 극비 지령을 맹목적으로 받들기 위해 자신의 어린 시절 과거 영혼과 온전한 기억을 인위적으로 자진 소거당한 사제입니다. 가시 돋친 냉소 뒤에는 위대한 자애로움을 품고 있습니다.",
+        quote: "\"비밀은 나의 유일한 안식처이지만, 당신의 응시는 조금 달갑군요.\"",
+        image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
+      },
+      gale: {
+        name: "게일 (Gale)",
+        class: "인간 위저드 / 마법의 신령한 조각",
+        desc: "한때 위대한 마법의 여신 미스트라의 유일무이한 총애를 받았던 대천재 마법 학자였으나, 금기된 마법 영역에 도전하다 심장에 우주를 파멸시킬 억제 불가능한 에테르 시한폭탄을 장착당하는 영겁의 형벌에 놓였습니다.",
+        quote: "\"심장이 폭발하기 전까지는, 아직 우리가 문학적인 승리를 거둘 기회가 있죠.\"",
+        image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&auto=format&fit=crop"
+      }
+    };
+
+    function showCompanion(key) {
+      const data = companionData[key];
+      document.getElementById('comp-name').textContent = data.name;
+      document.getElementById('comp-class').textContent = data.class;
+      document.getElementById('comp-desc').textContent = data.desc;
+      document.getElementById('comp-quote').textContent = data.quote;
+      document.getElementById('comp-visual').style.backgroundImage = `url('${data.image}')`;
+
+      const tabs = document.querySelectorAll('.companion-tabs .tab-btn');
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.getAttribute('onclick').includes(key)) {
+          tab.classList.add('active');
+        }
+      });
+    }
+
+    // 모랄 딜레마 인터랙션
+    function revealDilemmaResult(choice) {
+      document.getElementById('result-mercy').style.display = choice === 'mercy' ? 'block' : 'none';
+      document.getElementById('result-kill').style.display = choice === 'kill' ? 'block' : 'none';
+    }
+
+    // 로컬 스토리지 연계형 BGM 엔진
+    let isMusicPlaying = localStorage.getItem('bgmPlaying') !== 'false';
+    const vinylDisk = document.getElementById('vinyl-disk');
+    const bgmTitle = document.getElementById('bgm-title');
+    const musicBtnSvg = document.getElementById('music-btn-svg');
+
+    function updateBgmUI() {
+      if (isMusicPlaying) {
+        vinylDisk.style.animationPlayState = 'running';
+        bgmTitle.textContent = "Main Theme (Orchestra)";
+        musicBtnSvg.innerHTML = `<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>`;
+      } else {
+        vinylDisk.style.animationPlayState = 'paused';
+        bgmTitle.textContent = "Music Paused";
+        musicBtnSvg.innerHTML = `<polygon points="5 3 19 12 5 21 5 3"></polygon>`;
+      }
+    }
+
+    function toggleMusic() {
+      isMusicPlaying = !isMusicPlaying;
+      localStorage.setItem('bgmPlaying', isMusicPlaying);
+      updateBgmUI();
+    }
+
+    // 초기 로딩 시 상태 세팅
+    updateBgmUI();
+  </script>
+</body>
+</html>
