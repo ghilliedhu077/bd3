@@ -50,36 +50,84 @@
   </script>
 
   <style>
-    /* 3D 회전 + 가속 입체 애니메이션 (Tailwind 변환 불가 영역 보정용) */
-    @keyframes roll3d {
+    /* 제자리에서 통통 튀며 자연스럽게 구르는 3D 회전 및 수직 바운스 애니메이션 */
+    @keyframes roll3dReal {
       0% {
-        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
-        filter: drop-shadow(0 0 5px rgba(200, 162, 97, 0.2));
+        transform: translateY(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
       }
-      15% {
-        transform: rotateX(150deg) rotateY(-120deg) rotateZ(60deg) scale(1.15);
-        filter: drop-shadow(0 0 20px #a11c1c);
+      20% {
+        /* 제자리에서 위로 붕 치솟으며 다축 회전 시작 */
+        transform: translateY(-55px) rotateX(180deg) rotateY(120deg) rotateZ(90deg) scale(1.05);
       }
       40% {
-        transform: rotateX(420deg) rotateY(240deg) rotateZ(-120deg) scale(0.85);
-        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
+        /* 첫 번째 바닥 터치 및 가볍게 안착 충격 */
+        transform: translateY(0) rotateX(360deg) rotateY(240deg) rotateZ(180deg) scale(0.96);
       }
-      70% {
-        transform: rotateX(780deg) rotateY(600deg) rotateZ(240deg) scale(1.2);
-        filter: drop-shadow(0 0 30px #c8a261);
+      60% {
+        /* 두 번째 가벼운 도약 */
+        transform: translateY(-20px) rotateX(540deg) rotateY(360deg) rotateZ(270deg) scale(1.02);
       }
-      85% {
-        transform: rotateX(960deg) rotateY(900deg) rotateZ(300deg) scale(0.95);
-        filter: drop-shadow(0 0 15px #e6cc9c);
+      80% {
+        /* 세 번째 바닥 터치 및 잔진동 */
+        transform: translateY(0) rotateX(720deg) rotateY(480deg) rotateZ(315deg) scale(0.98);
+      }
+      90% {
+        /* 마지막 미세 튀어오름 */
+        transform: translateY(-4px) rotateX(900deg) rotateY(540deg) rotateZ(340deg) scale(1.01);
       }
       100% {
-        transform: rotateX(1120deg) rotateY(1120deg) rotateZ(360deg) scale(1);
-        filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.6));
+        /* 정지 및 숫자 정면 응시 */
+        transform: translateY(0) rotateX(1080deg) rotateY(720deg) rotateZ(360deg) scale(1);
+      }
+    }
+
+    /* 주사위가 위로 튀어오르는 높이에 부드럽게 연동되는 전용 입체 그림자 애니메이션 */
+    @keyframes shadowScaleReal {
+      0% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0.6;
+        filter: blur(4px);
+      }
+      20% {
+        /* 주사위가 공중에 붕 뜨면 그림자가 작아지고 흐려짐 */
+        transform: translateX(-50%) scale(0.65);
+        opacity: 0.25;
+        filter: blur(8px);
+      }
+      40% {
+        /* 바닥에 격돌할 때 그림자가 선명하고 커짐 */
+        transform: translateX(-50%) scale(1.1);
+        opacity: 0.85;
+        filter: blur(2px);
+      }
+      60% {
+        transform: translateX(-50%) scale(0.85);
+        opacity: 0.45;
+        filter: blur(5px);
+      }
+      80% {
+        transform: translateX(-50%) scale(1.03);
+        opacity: 0.75;
+        filter: blur(2.5px);
+      }
+      90% {
+        transform: translateX(-50%) scale(0.97);
+        opacity: 0.55;
+        filter: blur(3.5px);
+      }
+      100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0.6;
+        filter: blur(4px);
       }
     }
 
     .dice-rolling {
-      animation: roll3d 1.3s cubic-bezier(0.18, 0.89, 0.32, 1.1) forwards;
+      animation: roll3dReal 1.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    .shadow-rolling {
+      animation: shadowScaleReal 1.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     }
 
     @keyframes runeRotate {
@@ -186,8 +234,8 @@
           <!-- 주사위 롤러 메인 파트 -->
           <div class="flex-[1.2] flex flex-col items-center w-full">
             <div class="bg-gradient-to-b from-[#121316]/60 to-[#121316]/40 border border-gold/20 p-[50px] px-8 rounded-lg flex flex-col items-center w-full shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-              <div id="dice-container" onclick="rollDice()" class="relative w-[140px] h-[140px] cursor-pointer mb-6 [perspective:1000px]">
-                <svg id="dice-svg" class="w-full h-full text-gold transition-all duration-300 drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] hover:text-gold-light hover:drop-shadow-[0_0_12px_rgba(200,162,97,0.35)]" viewBox="0 0 100 100" fill="currentColor">
+              <div id="dice-container" onclick="rollDice()" class="relative w-[140px] h-[160px] cursor-pointer mb-6 [perspective:1000px] flex flex-col items-center justify-start">
+                <svg id="dice-svg" class="w-[140px] h-[140px] text-gold transition-all duration-300 drop-shadow-[0_0_10px_rgba(0,0,0,0.5)] hover:text-gold-light hover:drop-shadow-[0_0_12px_rgba(200,162,97,0.35)]" viewBox="0 0 100 100" fill="currentColor">
                   <polygon points="50,5 95,30 95,70 50,95 5,70 5,30" fill="rgba(10, 11, 13, 0.9)" stroke="currentColor" stroke-width="2"/>
                   <line x1="50" y1="5" x2="50" y2="95" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 1"/>
                   <line x1="5" y1="30" x2="95" y2="30" stroke="currentColor" stroke-width="1.5"/>
@@ -198,7 +246,9 @@
                   <line x1="95" y1="70" x2="50" y2="5" stroke="currentColor" stroke-width="1.5"/>
                   <polygon points="50,22 80,65 20,65" fill="rgba(200, 162, 97, 0.1)" stroke="currentColor" stroke-width="1.5"/>
                 </svg>
-                <span id="dice-number" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-title text-3xl font-extrabold text-gold hover:text-gold-light select-none transition-all duration-300">20</span>
+                <span id="dice-number" class="absolute top-[70px] left-1/2 -translate-x-1/2 -translate-y-1/2 font-title text-3xl font-extrabold text-gold hover:text-gold-light select-none transition-all duration-300">20</span>
+                <!-- 가상 바닥면 그림자 수용 요소 -->
+                <div id="dice-shadow" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-2.5 bg-black/60 rounded-full blur-[4px]"></div>
               </div>
 
               <button onclick="rollDice()" class="inline-flex items-center justify-center p-4 px-8 font-title text-[11px] font-bold tracking-[0.2em] uppercase rounded-[2px] cursor-pointer transition-all duration-300 bg-crimson text-white border border-gold/30 shadow-[0_4px_14px_rgba(161,28,28,0.2)] hover:bg-crimson-light hover:shadow-[0_6px_20px_rgba(161,28,28,0.3)] hover:-translate-y-0.5" style="padding: 12px 24px; font-size: 11px;">
@@ -283,23 +333,31 @@
 
       const diceSvg = document.getElementById('dice-svg');
       const diceNum = document.getElementById('dice-number');
+      const diceShadow = document.getElementById('dice-shadow');
       const diceMsg = document.getElementById('dice-message');
       const diceSubMsg = document.getElementById('dice-sub-message');
       const historyContainer = document.getElementById('history-container');
 
+      // 기존 롤링 클래스 및 리플로우 리셋 보정
       diceSvg.classList.remove('dice-rolling');
+      diceShadow.classList.remove('shadow-rolling');
       void diceSvg.offsetWidth;
+      void diceShadow.offsetWidth;
+      
+      // 진짜 구르는 물리 모션 시작
       diceSvg.classList.add('dice-rolling');
+      diceShadow.classList.add('shadow-rolling');
 
       diceNum.textContent = "?";
       diceMsg.textContent = "영혼의 주사위가 어둠의 나선 위를 활강 중입니다...";
       diceSubMsg.textContent = "우주와 당신의 운명 판정이 거칠게 연동되기 시작합니다.";
-      diceMsg.style.color = "#c8a261";
+      diceMsg.className = "text-base font-bold mb-3 tracking-wide text-gold";
 
       setTimeout(() => {
         const rollResult = Math.floor(Math.random() * 20) + 1;
         diceNum.textContent = rollResult;
         diceSvg.classList.remove('dice-rolling');
+        diceShadow.classList.remove('shadow-rolling');
 
         let message = "";
         let subMessage = "";
@@ -315,7 +373,7 @@
         } 
         else if (rollResult === 19) {
           message = `🎲 [초인적 성공 - 판정값 19] 완벽한 군중 심리 통제`;
-          subMessage = "<strong>대장을 넘어 주변 경비병들까지 당신의 영웅적 대의명분에 완전히 매료되었습니다.</strong> 그들은 경의를 표하며 요새 가이드 역할을 해줄 정예 호위병 2명까지 동행시킵니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 이들이 당신을 적대했다면 은밀히 투명 마법을 전원에게 시전한 후, 대장의 가죽 주머니에서 정문 통행 도장을 몰래 복사해 조용히 관통하는 암살자 특유의 슬릭 루트도 존재했습니다.";
+          subMessage = "<strong>대장을 넘어 주변 경비병들까지 당신의 영웅적 대의명분에 완전히 매료되었습니다.</strong> 그들은 경의를 표하며 요새 가이드 역할을 해줄 정예 호위병 2명까지 동행시킵니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 이들이 당신을 적대했다면 은밀히 투명 마법을 전원에게 시전한 후, 대장의 가죽 주머니에서 정문 통행 도장을 몰래 복사해 조용히 관통하는 암살자 특유 of 슬릭 루트도 존재했습니다.";
           colorClass = "text-[#059669]";
         } 
         else if (rollResult >= 17) {
