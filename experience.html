@@ -10,249 +10,105 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
   
-  <!-- 구글 폰트 링크 아래에 삽입 -->
-  <link rel="stylesheet" href="style.css">
+  <!-- Tailwind CSS CDN 및 설정 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#0a0b0d',
+            'obsidian-light': '#121316',
+            'obsidian-deep': '#050608',
+            gold: '#c8a261',
+            'gold-dark': '#a88344',
+            'gold-light': '#e6cc9c',
+            crimson: '#a11c1c',
+            'crimson-light': '#cf3c3c',
+            parchment: '#dfd5c6',
+            'parchment-dark': '#b3a99a',
+          },
+          fontFamily: {
+            title: ['Cinzel', 'serif'],
+            body: ['Alegreya', 'serif'],
+          },
+          transitionTimingFunction: {
+            'smooth': 'cubic-bezier(0.16, 1, 0.3, 1)',
+          },
+          animation: {
+            'rune-rotate': 'runeRotate 2s linear infinite',
+            'spin-slow': 'spin 10s linear infinite',
+            'fade-in': 'fadeIn 0.4s ease forwards',
+          },
+          keyframes: {
+            runeRotate: {
+              '100%': { transform: 'rotate(360deg)', filter: 'drop-shadow(0 0 15px #c8a261)' },
+            },
+            fadeIn: {
+              from: { opacity: '0', transform: 'translateY(5px)' },
+              to: { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
 
+  <!-- 커스텀 스타일 (CDN 컴파일 에러 방지를 위해 안전한 일반 CSS 형태로 선언) -->
   <style>
-    /* 추가 카드 및 스페셜 컬럼 모듈 전용 고품격 CSS */
-    .features {
-      position: relative;
-      padding: 120px 0 60px;
-      background-color: var(--color-obsidian);
-      border-bottom: 1px solid rgba(200, 162, 97, 0.1);
-    }
-    .features-glow {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(161, 28, 28, 0.05) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .col-span-2 {
-      grid-column: span 2;
-    }
-    .col-span-3 {
-      grid-column: span 3;
-    }
-    .col-span-6 {
-      grid-column: span 6;
-    }
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 24px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(200, 162, 97, 0.15);
-    }
-    .footer-text {
-      font-family: var(--font-title);
-      font-size: 11px;
-      color: var(--color-gold);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .arrow-icon {
-      width: 16px;
-      height: 16px;
-      color: var(--color-gold);
-      transition: var(--transition-smooth);
-    }
-    .feature-card:hover .arrow-icon {
-      transform: translateX(4px);
-      color: var(--color-gold-light);
-    }
-    .feature-card.special-card {
-      grid-column: span 6;
-      flex-direction: row;
-      gap: 40px;
-      align-items: center;
-      background: linear-gradient(135deg, rgba(18, 19, 22, 0.95) 0%, rgba(161, 28, 28, 0.08) 100%);
-      border: 1px solid rgba(161, 28, 28, 0.3);
-    }
-    .special-content {
-      flex: 1.5;
-    }
-    .special-badge {
-      display: inline-block;
-      background-color: var(--color-crimson);
+    html { scroll-behavior: smooth; }
+    ::selection {
+      background-color: #a11c1c; /* crimson */
       color: #ffffff;
-      font-family: var(--font-title);
-      font-size: 10px;
-      font-weight: bold;
-      letter-spacing: 0.1em;
-      padding: 4px 8px;
-      border-radius: 2px;
-      margin-bottom: 12px;
-      text-transform: uppercase;
     }
-    .special-info {
-      flex: 1;
-      background-color: rgba(10, 11, 13, 0.6);
-      border: 1px solid rgba(200, 162, 97, 0.15);
-      padding: 24px;
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0b0d; /* obsidian */ }
+    ::-webkit-scrollbar-thumb {
+      background: #c8a261; /* gold */
       border-radius: 4px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
-    .info-tag {
-      font-family: var(--font-title);
-      font-size: 11px;
-      color: var(--color-crimson-light);
-      letter-spacing: 0.15em;
-      margin-bottom: 8px;
-      display: block;
-    }
-    .info-value {
-      font-family: var(--font-title);
-      font-size: 24px;
-      font-weight: bold;
-      color: var(--color-gold);
-      margin-bottom: 8px;
-      display: block;
-    }
-    .info-desc {
-      font-size: 12px;
-      color: var(--color-parchment-dark);
-    }
+    ::-webkit-scrollbar-thumb:hover { background: #cf3c3c; /* crimson-light */ }
 
-    /* 동료 쇼케이스 고품격 고딕 스타일 보정 */
-    .experience-section {
-      background-color: var(--color-obsidian-light);
-      padding: 80px 0 100px;
+    .nav-active {
+      color: #c8a261; /* gold */
     }
-    .companions-showcase {
-      margin-bottom: 120px;
+    .nav-active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: #c8a261;
+      box-shadow: 0 0 8px #c8a261;
     }
-    .companion-tabs {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 48px;
-      flex-wrap: wrap;
-    }
+    
+    /* 동료 쇼케이스 탭 버튼 스타일 통합 (JS 호환 및 렌더링 안정성 확보) */
     .tab-btn {
-      background: rgba(10, 11, 13, 0.4);
+      background-color: rgba(5, 6, 8, 0.4);
       border: 1px solid rgba(200, 162, 97, 0.2);
-      color: var(--color-parchment-dark);
+      color: #b3a99a;
       padding: 14px 28px;
-      font-family: var(--font-title);
+      font-family: 'Cinzel', serif;
       font-size: 13px;
       letter-spacing: 0.1em;
       cursor: pointer;
-      transition: var(--transition-smooth);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       border-radius: 2px;
     }
     .tab-btn:hover, .tab-btn.active {
-      color: var(--color-gold);
-      border-color: var(--color-gold);
-      background-color: rgba(200, 162, 97, 0.08);
+      color: #c8a261;
+      border-color: #c8a261;
+      background-color: rgba(200, 162, 97, 0.1);
       box-shadow: 0 0 15px rgba(200, 162, 97, 0.1);
-    }
-    .companion-content {
-      display: flex;
-      align-items: center;
-      gap: 56px;
-      background: linear-gradient(145deg, var(--color-obsidian-deep) 0%, rgba(20, 21, 25, 0.95) 100%);
-      border: 1px solid rgba(200, 162, 97, 0.25);
-      border-radius: 4px;
-      padding: 48px;
-      min-height: 380px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-      position: relative;
-    }
-    .companion-content::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top right, rgba(200, 162, 97, 0.04) 0%, transparent 60%);
-      pointer-events: none;
-    }
-    .companion-details {
-      flex: 1.4;
-    }
-    .companion-name {
-      font-family: var(--font-title);
-      font-size: 32px;
-      color: var(--color-gold-light);
-      margin-bottom: 8px;
-      letter-spacing: 0.05em;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-    }
-    .companion-class {
-      font-family: var(--font-title);
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      color: var(--color-crimson-light);
-      margin-bottom: 24px;
-      text-transform: uppercase;
-      font-weight: bold;
-    }
-    .companion-desc {
-      font-size: 16px;
-      color: var(--color-parchment);
-      line-height: 1.8;
-      margin-bottom: 28px;
-    }
-    .companion-quote {
-      font-style: italic;
-      border-left: 3px solid var(--color-gold);
-      padding-left: 20px;
-      color: var(--color-gold);
-      font-size: 15px;
-      line-height: 1.6;
-    }
-    .companion-visual {
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      border: 3px solid rgba(200, 162, 97, 0.3);
-      box-shadow: 0 0 25px rgba(200, 162, 97, 0.15);
-      background-size: cover;
-      background-position: center;
-      flex-shrink: 0;
-      transition: var(--transition-smooth);
-    }
-    .companion-content:hover .companion-visual {
-      border-color: var(--color-gold);
-      box-shadow: 0 0 35px rgba(200, 162, 97, 0.25);
-    }
-
-    @media (max-width: 1024px) {
-      .feature-card.special-card {
-        flex-direction: column;
-        gap: 24px;
-        align-items: stretch;
-      }
-      .col-span-2, .col-span-3, .col-span-6 {
-        grid-column: span 6;
-      }
-      .companion-content {
-        flex-direction: column-reverse;
-        gap: 40px;
-        padding: 36px 24px;
-        text-align: center;
-      }
-      .companion-visual {
-        width: 200px;
-        height: 200px;
-      }
-      .companion-quote {
-        border-left: none;
-        border-top: 1px dashed rgba(200, 162, 97, 0.3);
-        padding-left: 0;
-        padding-top: 16px;
-        margin-top: 16px;
-      }
     }
   </style>
 </head>
-<body>
+<body class="bg-obsidian text-parchment font-body overflow-x-hidden leading-[1.6]">
 
   <!-- 글로벌 트랜지션 로더 -->
-  <div class="screen-loader" id="screen-loader">
-    <svg class="loader-rune" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+  <div class="fixed inset-0 bg-obsidian-deep z-[9999] flex justify-center items-center transition-opacity duration-500 ease-out pointer-events-none" id="screen-loader">
+    <svg class="w-20 h-20 text-gold animate-rune-rotate" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
       <circle cx="50" cy="50" r="40" stroke-dasharray="10 5" />
       <polygon points="50,15 80,75 20,75" stroke-linejoin="round" />
       <polygon points="50,85 80,25 20,25" stroke-linejoin="round" />
@@ -261,18 +117,18 @@
   </div>
 
   <!-- 가상 뮤직 플레이어 -->
-  <div class="bgm-player" id="music-player">
-    <div class="vinyl" id="vinyl-disk">
+  <div class="fixed bottom-6 right-6 z-[1000] bg-obsidian-light/95 border border-gold/40 py-3 px-4 rounded flex items-center gap-4 shadow-[0_10px_30px_rgba(0,0,0,0.6)] backdrop-blur-sm transition-all duration-500 ease-smooth hover:border-gold" id="music-player">
+    <div class="w-10 h-10 rounded-full border border-gold/30 bg-obsidian flex items-center justify-center text-gold animate-spin-slow" id="vinyl-disk">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"></circle>
         <circle cx="12" cy="12" r="3"></circle>
       </svg>
     </div>
-    <div class="bgm-info">
-      <p class="bgm-tag">BALDUR'S GATE III</p>
-      <p class="bgm-title" id="bgm-title">Main Theme (Orchestra)</p>
+    <div class="w-[120px]">
+      <p class="font-title text-[10px] text-gold tracking-[0.1em]">BALDUR'S GATE III</p>
+      <p class="text-[11px] text-parchment-dark whitespace-nowrap overflow-hidden text-ellipsis" id="bgm-title">Main Theme (Orchestra)</p>
     </div>
-    <button onclick="toggleMusic()" class="btn-play-toggle" aria-label="음악 재생/정지 토글">
+    <button onclick="toggleMusic()" class="bg-transparent border-none text-gold cursor-pointer flex items-center justify-center p-1.5 rounded-full transition-all duration-500 hover:bg-gold/10" aria-label="음악 재생/정지 토글">
       <svg id="music-btn-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="6" y="4" width="4" height="16"></rect>
         <rect x="14" y="4" width="4" height="16"></rect>
@@ -281,27 +137,28 @@
   </div>
 
   <!-- 글로벌 헤더 (GNB) -->
-  <header class="global-gnb-header">
-    <div class="container">
-      <div class="header-wrap">
-        <!-- 로고 (클릭 시 메인 홈 이동) -->
-        <a href="index.html" class="logo">
+  <header class="fixed top-0 left-0 w-full z-[100] bg-gradient-to-b from-obsidian-deep/70 to-transparent border-b border-gold/15 backdrop-blur-md transition-all duration-500 ease-smooth">
+    <div class="max-w-[1200px] mx-auto px-6">
+      <div class="flex justify-between items-center py-5">
+        <!-- 로고 -->
+        <a href="index.html" class="font-title text-xl font-extrabold text-gold tracking-[0.15em] transition-all duration-500 ease-smooth flex items-center gap-2.5 hover:text-gold-light">
           BALDUR'S GATE III
         </a>
         
         <!-- 데스크톱 네비게이션 바 -->
-        <nav id="main-nav">
-          <a href="index.html" id="nav-home" class="nav-link">HOME</a>
-          <a href="story.html" id="nav-story" class="nav-link">THE STORY</a>
-          <a href="experience.html" id="nav-experience" class="nav-link active">THE EXPERIENCE</a>
-          <a href="roll.html" id="nav-roll" class="nav-link">ROLL THE DICE</a>
+        <nav id="main-nav" class="hidden md:flex items-center gap-7">
+          <a href="index.html" id="nav-home" class="font-title text-[11px] text-parchment-dark tracking-[0.15em] transition-all duration-500 ease-smooth relative py-1.5 hover:text-gold">HOME</a>
+          <a href="story.html" id="nav-story" class="font-title text-[11px] text-parchment-dark tracking-[0.15em] transition-all duration-500 ease-smooth relative py-1.5 hover:text-gold">THE STORY</a>
+          <!-- THE EXPERIENCE 활성화 상태 적용 -->
+          <a href="experience.html" id="nav-experience" class="font-title text-[11px] text-parchment-dark tracking-[0.15em] transition-all duration-500 ease-smooth relative py-1.5 hover:text-gold nav-active">THE EXPERIENCE</a>
+          <a href="roll.html" id="nav-roll" class="font-title text-[11px] text-parchment-dark tracking-[0.15em] transition-all duration-500 ease-smooth relative py-1.5 hover:text-gold">ROLL THE DICE</a>
           
           <!-- 행동 유도 버튼 -->
-          <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="btn-header-cta">PLAY NOW</a>
+          <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="border border-gold/40 py-2 px-4 text-gold font-title text-[11px] tracking-[0.15em] transition-all duration-500 ease-smooth hover:border-gold hover:bg-gold/5 hover:text-gold-light hover:shadow-[0_0_10px_rgba(200,162,97,0.15)]">PLAY NOW</a>
         </nav>
         
         <!-- 모바일 햄버거 메뉴 토글 버튼 -->
-        <button onclick="toggleMobileMenu()" class="menu-toggle" aria-label="모바일 메뉴 열기/닫기">
+        <button onclick="toggleMobileMenu()" class="block md:hidden bg-transparent border-none text-gold cursor-pointer" aria-label="모바일 메뉴 열기/닫기">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="12" x2="21" y2="12"></line>
             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -312,32 +169,35 @@
     </div>
     
     <!-- 모바일 아코디언 드롭다운 메뉴 -->
-    <div id="mobile-menu" class="mobile-nav">
-      <a href="index.html" id="mob-home" class="nav-link">HOME</a>
-      <a href="story.html" id="mob-story" class="nav-link">THE STORY</a>
-      <a href="experience.html" id="mob-experience" class="nav-link active">THE EXPERIENCE</a>
-      <a href="roll.html" id="mob-roll" class="nav-link">ROLL THE DICE</a>
-      <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="mob-cta-link">PLAY NOW</a>
+    <div id="mobile-menu" class="hidden fixed top-[73px] left-0 w-full bg-obsidian-light border-b border-gold/20 py-4 px-6 z-[99]">
+      <a href="index.html" class="block py-3 font-title text-xs text-parchment tracking-[0.15em]">HOME</a>
+      <a href="story.html" class="block py-3 font-title text-xs text-parchment tracking-[0.15em]">THE STORY</a>
+      <a href="experience.html" class="block py-3 font-title text-xs text-gold font-bold tracking-[0.15em]">THE EXPERIENCE</a>
+      <a href="roll.html" class="block py-3 font-title text-xs text-parchment tracking-[0.15em]">ROLL THE DICE</a>
+      <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="block py-3 font-title text-xs text-parchment tracking-[0.15em]">PLAY NOW</a>
     </div>
   </header>
 
   <!-- EXPERIENCE 내용 -->
-  <main>
-    <section id="features" class="features">
-      <div class="features-glow"></div>
-      <div class="container">
-        <div class="section-title-wrap">
-          <span class="section-tag">Core Experience</span>
-          <h2 class="section-title">비교 불가능한 모험을 완성하는 5가지 가치</h2>
-          <div class="title-line"></div>
+  <main class="mt-[73px]">
+    <!-- 코어 경험 및 시스템 (특수 카드 포함) -->
+    <section id="features" class="relative pt-[120px] pb-[60px] bg-obsidian border-b border-gold/10">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(161,28,28,0.05)_0%,transparent_70%)] pointer-events-none"></div>
+      
+      <div class="max-w-[1200px] mx-auto px-6 relative z-10">
+        <!-- 섹션 타이틀 -->
+        <div class="text-center max-w-[700px] mx-auto mb-[60px]">
+          <span class="font-title text-[11px] tracking-[0.25em] text-gold uppercase mb-3 block">Core Experience</span>
+          <h2 class="font-title text-[28px] md:text-[36px] text-parchment font-bold tracking-[0.05em]">비교 불가능한 모험을 완성하는 5가지 가치</h2>
+          <div class="w-[100px] h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-5"></div>
         </div>
 
-        <div class="features-grid">
+        <div class="grid grid-cols-1 lg:grid-cols-6 gap-8">
           <!-- 카드 1: 정답 없는 나비효과 -->
-          <div class="col-span-2">
-            <div class="feature-card">
+          <div class="lg:col-span-2">
+            <div class="group bg-obsidian border border-gold/10 p-10 rounded flex flex-col justify-between h-full transition-all duration-500 ease-smooth hover:shadow-[0_0_25px_rgba(200,162,97,0.15)] hover:border-gold">
               <div>
-                <div class="card-icon">
+                <div class="text-gold mb-6">
                   <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="6" y1="3" x2="6" y2="15"></line>
                     <circle cx="18" cy="6" r="3"></circle>
@@ -345,13 +205,13 @@
                     <path d="M18 9a9 9 0 0 1-9 9"></path>
                   </svg>
                 </div>
-                <p class="card-tag">01. Infinite Choice</p>
-                <h3>정답 없는 나비효과</h3>
-                <p>당신이 던진 사소한 말 한마디, 우연한 호의가 시간이 흘러 거대한 제국을 구하는 영웅담이 되거나 혹은 감당할 수 없는 파멸의 비수가 되어 돌아옵니다. 안전한 정답은 없습니다. 오직 당신만의 정의가 길을 만듭니다.</p>
+                <p class="font-title text-[10px] text-gold tracking-[0.15em] mb-3 block">01. Infinite Choice</p>
+                <h3 class="font-title text-[20px] text-parchment mb-4">정답 없는 나비효과</h3>
+                <p class="text-[14px] text-parchment-dark leading-[1.7]">당신이 던진 사소한 말 한마디, 우연한 호의가 시간이 흘러 거대한 제국을 구하는 영웅담이 되거나 혹은 감당할 수 없는 파멸의 비수가 되어 돌아옵니다. 안전한 정답은 없습니다. 오직 당신만의 정의가 길을 만듭니다.</p>
               </div>
-              <div class="card-footer">
-                <span class="footer-text">Butterfly Effect</span>
-                <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <div class="flex justify-between items-center mt-6 pt-4 border-t border-gold/15">
+                <span class="font-title text-[11px] text-gold tracking-[0.1em] uppercase">Butterfly Effect</span>
+                <svg class="w-4 h-4 text-gold transition-transform duration-500 ease-smooth group-hover:translate-x-1 group-hover:text-gold-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
@@ -360,22 +220,22 @@
           </div>
 
           <!-- 카드 2: 천 개의 엔딩, 만 개의 길 -->
-          <div class="col-span-3">
-            <div class="feature-card">
+          <div class="lg:col-span-3">
+            <div class="group bg-obsidian border border-gold/10 p-10 rounded flex flex-col justify-between h-full transition-all duration-500 ease-smooth hover:shadow-[0_0_25px_rgba(200,162,97,0.15)] hover:border-gold">
               <div>
-                <div class="card-icon">
+                <div class="text-gold mb-6">
                   <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
                   </svg>
                 </div>
-                <p class="card-tag">02. Absolute Freedom</p>
-                <h3>천 개의 엔딩, 만 개의 탐험로</h3>
-                <p>성문을 지키는 적들을 마주했을 때 어떻게 하시겠습니까? 정면 대결, 은밀한 침투, 설득이나 매수, 심지어 동물과의 대화로 우회할 수도 있습니다. 발더스 게이트의 상상력 경계는 당신의 생각 크기와 완벽히 일치합니다.</p>
+                <p class="font-title text-[10px] text-gold tracking-[0.15em] mb-3 block">02. Absolute Freedom</p>
+                <h3 class="font-title text-[20px] text-parchment mb-4">천 개의 엔딩, 만 개의 탐험로</h3>
+                <p class="text-[14px] text-parchment-dark leading-[1.7]">성문을 지키는 적들을 마주했을 때 어떻게 하시겠습니까? 정면 대결, 은밀한 침투, 설득이나 매수, 심지어 동물과의 대화로 우회할 수도 있습니다. 발더스 게이트의 상상력 경계는 당신의 생각 크기와 완벽히 일치합니다.</p>
               </div>
-              <div class="card-footer">
-                <span class="footer-text">True Role-playing</span>
-                <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <div class="flex justify-between items-center mt-6 pt-4 border-t border-gold/15">
+                <span class="font-title text-[11px] text-gold tracking-[0.1em] uppercase">True Role-playing</span>
+                <svg class="w-4 h-4 text-gold transition-transform duration-500 ease-smooth group-hover:translate-x-1 group-hover:text-gold-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
@@ -384,10 +244,10 @@
           </div>
 
           <!-- 카드 3: 깊어지는 동료 유대 -->
-          <div class="col-span-3">
-            <div class="feature-card">
+          <div class="lg:col-span-3">
+            <div class="group bg-obsidian border border-gold/10 p-10 rounded flex flex-col justify-between h-full transition-all duration-500 ease-smooth hover:shadow-[0_0_25px_rgba(200,162,97,0.15)] hover:border-gold">
               <div>
-                <div class="card-icon">
+                <div class="text-gold mb-6">
                   <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                     <circle cx="9" cy="7" r="4"></circle>
@@ -395,13 +255,13 @@
                     <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                   </svg>
                 </div>
-                <p class="card-tag">03. Living Companions</p>
-                <h3>살아 숨 쉬는 동료들과의 유대</h3>
-                <p>각자의 비극적 과거와 비밀을 품은 동료들. 그들은 인형이 아닙니다. 끊임없이 스스로 주장하며, 당신의 도덕관에 실망하기도 깊이 감응하기도 합니다. 험난한 고난길에서 진정한 영원의 동반자 또는 대치자를 발견해 보세요.</p>
+                <p class="font-title text-[10px] text-gold tracking-[0.15em] mb-3 block">03. Living Companions</p>
+                <h3 class="font-title text-[20px] text-parchment mb-4">살아 숨 쉬는 동료들과의 유대</h3>
+                <p class="text-[14px] text-parchment-dark leading-[1.7]">각자의 비극적 과거와 비밀을 품은 동료들. 그들은 인형이 아닙니다. 끊임없이 스스로 주장하며, 당신의 도덕관에 실망하기도 깊이 감응하기도 합니다. 험난한 고난길에서 진정한 영원의 동반자 또는 대치자를 발견해 보세요.</p>
               </div>
-              <div class="card-footer">
-                <span class="footer-text">Complex Narratives</span>
-                <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <div class="flex justify-between items-center mt-6 pt-4 border-t border-gold/15">
+                <span class="font-title text-[11px] text-gold tracking-[0.1em] uppercase">Complex Narratives</span>
+                <svg class="w-4 h-4 text-gold transition-transform duration-500 ease-smooth group-hover:translate-x-1 group-hover:text-gold-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
@@ -410,23 +270,23 @@
           </div>
 
           <!-- 카드 4: 웅장한 오케스트라 사운드 -->
-          <div class="col-span-2">
-            <div class="feature-card">
+          <div class="lg:col-span-2">
+            <div class="group bg-obsidian border border-gold/10 p-10 rounded flex flex-col justify-between h-full transition-all duration-500 ease-smooth hover:shadow-[0_0_25px_rgba(200,162,97,0.15)] hover:border-gold">
               <div>
-                <div class="card-icon">
+                <div class="text-gold mb-6">
                   <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 18V5l12-2v13"></path>
                     <circle cx="6" cy="18" r="3"></circle>
                     <circle cx="18" cy="16" r="3"></circle>
                   </svg>
                 </div>
-                <p class="card-tag">04. Orchestral Symphony</p>
-                <h3>귓가에 스며드는 명품 서사시</h3>
-                <p>대서사시의 매 순간 전율과 호흡을 함께 불어넣는 세계적인 사운드트랙. 모닥불 가의 아늑함부터 보스 전투의 폭풍우 속 긴장감까지 온전히 휘감아 들어와 게임 이상의 압도적인 공감각적 문학 예술을 연출합니다.</p>
+                <p class="font-title text-[10px] text-gold tracking-[0.15em] mb-3 block">04. Orchestral Symphony</p>
+                <h3 class="font-title text-[20px] text-parchment mb-4">귓가에 스며드는 명품 서사시</h3>
+                <p class="text-[14px] text-parchment-dark leading-[1.7]">대서사시의 매 순간 전율과 호흡을 함께 불어넣는 세계적인 사운드트랙. 모닥불 가의 아늑함부터 보스 전투의 폭풍우 속 긴장감까지 온전히 휘감아 들어와 게임 이상의 압도적인 공감각적 문학 예술을 연출합니다.</p>
               </div>
-              <div class="card-footer">
-                <span class="footer-text">Epic Soundscapes</span>
-                <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <div class="flex justify-between items-center mt-6 pt-4 border-t border-gold/15">
+                <span class="font-title text-[11px] text-gold tracking-[0.1em] uppercase">Epic Soundscapes</span>
+                <svg class="w-4 h-4 text-gold transition-transform duration-500 ease-smooth group-hover:translate-x-1 group-hover:text-gold-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
@@ -434,21 +294,21 @@
             </div>
           </div>
 
-          <!-- 카드 5: 평생 소장 풀패키지 -->
-          <div class="col-span-6">
-            <div class="feature-card special-card">
-              <div class="special-content">
-                <span class="special-badge">No Extra Cost</span>
-                <p class="card-tag" style="margin-bottom: 4px;">05. True Ownership</p>
-                <h3>추가 과금과 편법 없는 영원한 패키지 소장</h3>
-                <p style="margin-top: 12px; font-size: 14px; line-height: 1.8; color: var(--color-parchment-dark);">
+          <!-- 카드 5: 평생 소장 풀패키지 (스페셜 카드) -->
+          <div class="lg:col-span-6">
+            <div class="group flex flex-col lg:flex-row gap-6 lg:gap-10 items-stretch lg:items-center bg-[linear-gradient(135deg,rgba(18,19,22,0.95)_0%,rgba(161,28,28,0.08)_100%)] border border-crimson/30 p-10 rounded transition-all duration-500 ease-smooth hover:shadow-[0_0_25px_rgba(200,162,97,0.15)] hover:border-gold">
+              <div class="flex-[1.5]">
+                <span class="inline-block bg-crimson text-white font-title text-[10px] font-bold tracking-[0.1em] py-1 px-2 rounded-sm mb-3 uppercase">No Extra Cost</span>
+                <p class="font-title text-[10px] text-gold tracking-[0.15em] mb-1 block">05. True Ownership</p>
+                <h3 class="font-title text-[20px] text-parchment">추가 과금과 편법 없는 영원한 패키지 소장</h3>
+                <p class="mt-3 text-[14px] text-parchment-dark leading-[1.8]">
                   인게임 추가 뽑기 유도나 지루하게 시간만 뺏는 일일 퀘스트에 지치셨나요? 오직 단 한 번의 투입으로 150시간 분량의 최정상급 명작 서사시를 아무 제약 없이 소장할 수 있습니다. 지적 서재의 정통 고전문학 장편 전집을 갖춘 듯한 온전하고 가치 있는 기쁨을 제안합니다.
                 </p>
               </div>
-              <div class="special-info">
-                <span class="info-tag">COMPLETE EDITION</span>
-                <span class="info-value">100% Full Spec</span>
-                <p class="info-desc">추가 DLC 강제 결제 없음</p>
+              <div class="flex-1 bg-obsidian-deep/60 border border-gold/15 p-6 rounded text-center flex flex-col justify-center">
+                <span class="font-title text-[11px] text-crimson-light tracking-[0.15em] mb-2 block">COMPLETE EDITION</span>
+                <span class="font-title text-[24px] font-bold text-gold mb-2 block">100% Full Spec</span>
+                <p class="text-[12px] text-parchment-dark">추가 DLC 강제 결제 없음</p>
               </div>
             </div>
           </div>
@@ -457,50 +317,55 @@
       </div>
     </section>
 
-    <section class="experience-section">
-      <div class="container">
+    <!-- 동료 쇼케이스 & 딜레마 -->
+    <section class="bg-obsidian-light pt-[80px] pb-[100px]">
+      <div class="max-w-[1200px] mx-auto px-6">
 
         <!-- 핵심 영웅 동료 쇼케이스 -->
-        <div class="companions-showcase">
-          <h3 class="section-title" style="font-size: 24px; text-align: center; margin-bottom: 30px;">여정을 장식할 매력적인 조력자들</h3>
+        <div class="mb-[120px]">
+          <h3 class="font-title text-[24px] text-parchment font-bold tracking-[0.05em] text-center mb-[30px]">여정을 장식할 매력적인 조력자들</h3>
           
-          <div class="companion-tabs">
+          <div class="flex justify-center gap-4 mb-12 flex-wrap companion-tabs">
             <button class="tab-btn active" onclick="showCompanion('astarion')">아스타리온 (Astarion)</button>
             <button class="tab-btn" onclick="showCompanion('shadowheart')">섀도하트 (Shadowheart)</button>
             <button class="tab-btn" onclick="showCompanion('gale')">게일 (Gale)</button>
           </div>
 
-          <div class="companion-content" id="companion-viewer">
-            <div class="companion-details">
-              <h4 class="companion-name" id="comp-name">아스타리온 (Astarion)</h4>
-              <p class="companion-class" id="comp-class">하이 엘프 로그 / 뱀파이어 스폰</p>
-              <p class="companion-desc" id="comp-desc">수백 년간 어둠의 군주 밑에서 수동적인 인형으로 사육당하던 뱀파이어 노예였습니다. 태양 아래 자유를 비로소 되찾은 뒤, 자신의 나약함을 증오하고 강인한 힘과 잔인한 자유를 소망합니다.</p>
-              <p class="companion-quote" id="comp-quote">"영웅들이야말로 문제의 절반이지. 선과 악, 옳고 그름 같은 걸 믿는 멍청이들. 카자도르에게서 날 구해준 건 영웅이 아니라 마인드 플레이어였어"</p>
+          <div class="group flex flex-col-reverse lg:flex-row items-center gap-10 lg:gap-14 bg-[linear-gradient(145deg,#050608_0%,rgba(20,21,25,0.95)_100%)] border border-gold/25 rounded p-9 lg:p-12 min-h-[380px] shadow-[0_15px_40px_rgba(0,0,0,0.6)] relative text-center lg:text-left" id="companion-viewer">
+            <!-- 내부 광원 이펙트 -->
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(200,162,97,0.04)_0%,transparent_60%)] pointer-events-none"></div>
+            
+            <div class="flex-[1.4] relative z-10">
+              <h4 class="font-title text-[32px] text-gold-light mb-2 tracking-[0.05em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" id="comp-name">아스타리온 (Astarion)</h4>
+              <p class="font-title text-[11px] text-crimson-light tracking-[0.2em] font-bold uppercase mb-6" id="comp-class">하이 엘프 로그 / 뱀파이어 스폰</p>
+              <p class="text-[16px] text-parchment leading-[1.8] mb-7" id="comp-desc">수백 년간 어둠의 군주 밑에서 수동적인 인형으로 사육당하던 뱀파이어 노예였습니다. 태양 아래 자유를 비로소 되찾은 뒤, 자신의 나약함을 증오하고 강인한 힘과 잔인한 자유를 소망합니다.</p>
+              <p class="italic lg:border-l-[3px] lg:border-t-0 border-t border-dashed border-gold/30 lg:border-gold lg:pl-5 lg:pt-0 pt-4 mt-4 lg:mt-0 text-gold text-[15px] leading-[1.6]" id="comp-quote">"영웅들이야말로 문제의 절반이지. 선과 악, 옳고 그름 같은 걸 믿는 멍청이들. 카자도르에게서 날 구해준 건 영웅이 아니라 마인드 플레이어였어"</p>
             </div>
-            <div class="companion-visual" id="comp-visual" style="background-image: url('https://static.tvtropes.org/pmwiki/pub/images/539px_astarion.png');"></div>
+            
+            <div class="w-[200px] h-[200px] lg:w-[280px] lg:h-[280px] rounded-full border-[3px] border-gold/30 shadow-[0_0_25px_rgba(200,162,97,0.15)] bg-cover bg-center shrink-0 transition-all duration-500 ease-smooth group-hover:border-gold group-hover:shadow-[0_0_35px_rgba(200,162,97,0.25)] relative z-10" id="comp-visual" style="background-image: url('https://static.tvtropes.org/pmwiki/pub/images/539px_astarion.png');"></div>
           </div>
         </div>
 
         <!-- 선택 딜레마 시뮬레이터 -->
-        <div class="dilemma-section">
-          <div class="dilemma-box">
-            <span class="card-tag">Crucial Moral Dilemma</span>
-            <h4>상황 시뮬레이션: 마녀가 지배하는 숲</h4>
-            <p class="dilemma-desc">당신은 불치병에 걸린 아내를 고칠 비법을 쥐고 있는 마녀 에텔을 생포했습니다. 하지만 그녀는 교활하며 살려달라 호소하는 동시에, 기적의 영약을 보상으로 제안합니다. 당신은 어떻게 하시겠습니까?</p>
+        <div class="bg-obsidian border border-gold/10 rounded p-10 lg:py-[60px] lg:px-[40px]">
+          <div class="max-w-[800px] mx-auto text-center">
+            <span class="font-title text-[10px] text-gold tracking-[0.15em] mb-3 block uppercase">Crucial Moral Dilemma</span>
+            <h4 class="font-title text-[22px] text-gold mb-4">상황 시뮬레이션: 마녀가 지배하는 숲</h4>
+            <p class="text-[16px] text-parchment-dark mb-8 leading-[1.7]">당신은 불치병에 걸린 아내를 고칠 비법을 쥐고 있는 마녀 에텔을 생포했습니다. 하지만 그녀는 교활하며 살려달라 호소하는 동시에, 기적의 영약을 보상으로 제안합니다. 당신은 어떻게 하시겠습니까?</p>
             
-            <div class="dilemma-choices">
-              <div class="choice-card" onclick="revealDilemmaResult('mercy')">
-                <span class="choice-num">OPTION 1</span>
-                <p class="choice-title">영약을 넘겨받고 마녀의 평생 방치 거래에 수긍한다.</p>
-                <div class="choice-result-text" id="result-mercy">
-                  <strong>체험 결과:</strong> 아내는 기적처럼 부활하지만 마녀가 근처 영아들을 제물로 삼는 기괴한 비극이 이어집니다. 당신은 후손들의 격렬한 원망을 받으며 죄책감의 감옥에 빠지게 됩니다.
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div class="bg-obsidian-light border border-gold/15 p-6 rounded cursor-pointer text-left transition-all duration-500 ease-smooth hover:border-crimson hover:bg-crimson/5" onclick="revealDilemmaResult('mercy')">
+                <span class="font-title text-[11px] text-crimson-light mb-2 block">OPTION 1</span>
+                <p class="text-[15px] font-bold text-parchment mb-2">영약을 넘겨받고 마녀의 평생 방치 거래에 수긍한다.</p>
+                <div class="text-[13px] text-parchment-dark hidden mt-3 pt-3 border-t border-dashed border-gold/15" id="result-mercy">
+                  <strong class="text-parchment font-bold">체험 결과:</strong> 아내는 기적처럼 부활하지만 마녀가 근처 영아들을 제물로 삼는 기괴한 비극이 이어집니다. 당신은 후손들의 격렬한 원망을 받으며 죄책감의 감옥에 빠지게 됩니다.
                 </div>
               </div>
-              <div class="choice-card" onclick="revealDilemmaResult('kill')">
-                <span class="choice-num">OPTION 2</span>
-                <p class="choice-title">거래를 과감히 거부하고 마녀를 완전 참수하여 정의를 실현한다.</p>
-                <div class="choice-result-text" id="result-kill">
-                  <strong>체험 결과:</strong> 숲의 역겨운 악의 고리는 정의롭게 끊어냈지만, 당신은 아내를 끝내 잃어 평생 가슴 아픈 고통과 고독 속에 밤하늘만을 조용히 응시하게 됩니다.
+              <div class="bg-obsidian-light border border-gold/15 p-6 rounded cursor-pointer text-left transition-all duration-500 ease-smooth hover:border-crimson hover:bg-crimson/5" onclick="revealDilemmaResult('kill')">
+                <span class="font-title text-[11px] text-crimson-light mb-2 block">OPTION 2</span>
+                <p class="text-[15px] font-bold text-parchment mb-2">거래를 과감히 거부하고 마녀를 완전 참수하여 정의를 실현한다.</p>
+                <div class="text-[13px] text-parchment-dark hidden mt-3 pt-3 border-t border-dashed border-gold/15" id="result-kill">
+                  <strong class="text-parchment font-bold">체험 결과:</strong> 숲의 역겨운 악의 고리는 정의롭게 끊어냈지만, 당신은 아내를 끝내 잃어 평생 가슴 아픈 고통과 고독 속에 밤하늘만을 조용히 응시하게 됩니다.
                 </div>
               </div>
             </div>
@@ -512,22 +377,22 @@
   </main>
 
   <!-- 글로벌 푸터 -->
-  <footer>
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <h4>BALDUR'S GATE III</h4>
-          <p>"남이 만든 결말은 지루하니까. 이제 당신이 주인공이 될 차례."</p>
+  <footer class="bg-obsidian-deep border-t border-gold/20 pt-[60px] pb-10">
+    <div class="max-w-[1200px] mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-8 mb-10">
+        <div>
+          <h4 class="font-title text-[14px] text-gold tracking-[0.15em] mb-2">BALDUR'S GATE III</h4>
+          <p class="text-[12px] text-parchment-dark">"남이 만든 결말은 지루하니까. 이제 당신이 주인공이 될 차례."</p>
         </div>
-        <div class="footer-links">
-          <a href="#">이용약관</a>
-          <span class="footer-divider">|</span>
-          <a href="#">개인정보처리방침</a>
-          <span class="footer-divider">|</span>
-          <a href="#">여정 지원 가이드</a>
+        <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6 text-xs text-parchment-dark">
+          <a href="#" class="transition-colors duration-500 hover:text-gold">이용약관</a>
+          <span class="text-gold/20 hidden md:inline">|</span>
+          <a href="#" class="transition-colors duration-500 hover:text-gold">개인정보처리방침</a>
+          <span class="text-gold/20 hidden md:inline">|</span>
+          <a href="#" class="transition-colors duration-500 hover:text-gold">여정 지원 가이드</a>
         </div>
       </div>
-      <div class="footer-bottom">
+      <div class="border-t border-gold/5 pt-8 text-center text-[10px] text-parchment-dark">
         <p>&copy; 2026 Larian Studios. All rights reserved. 이 작업물은 명작 정통 판타지 스토리텔링의 한계를 다각화하기 위해 고안된 MPA 가상 웹포트폴리오입니다.</p>
       </div>
     </div>
@@ -538,18 +403,14 @@
     window.addEventListener('DOMContentLoaded', () => {
       const loader = document.getElementById('screen-loader');
       setTimeout(() => {
-        loader.classList.add('hidden');
+        loader.classList.add('opacity-0');
       }, 150);
     });
 
-    // 모바일 햄버거 메뉴 토글 기능 (동일 폴더 내 모든 HTML 하단에 공유)
+    // 모바일 햄버거 메뉴 토글 기능
     function toggleMobileMenu() {
       const menu = document.getElementById('mobile-menu');
-      if (menu.style.display === 'block') {
-        menu.style.display = 'none';
-      } else {
-        menu.style.display = 'block';
-      }
+      menu.classList.toggle('hidden');
     }
 
     // 동료 정보 DB
@@ -596,8 +457,8 @@
 
     // 모랄 딜레마 인터랙션
     function revealDilemmaResult(choice) {
-      document.getElementById('result-mercy').style.display = choice === 'mercy' ? 'block' : 'none';
-      document.getElementById('result-kill').style.display = choice === 'kill' ? 'block' : 'none';
+      document.getElementById('result-mercy').classList.toggle('hidden', choice !== 'mercy');
+      document.getElementById('result-kill').classList.toggle('hidden', choice !== 'kill');
     }
 
     // 로컬 스토리지 연계형 BGM 엔진
