@@ -11,7 +11,122 @@
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
   
   <!-- 구글 폰트 링크 아래에 삽입 -->
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* 추가 카드 및 스페셜 컬럼 모듈 전용 고품격 CSS */
+    .features {
+      position: relative;
+      padding: 120px 0 60px;
+      background-color: var(--color-obsidian);
+      border-bottom: 1px solid rgba(200, 162, 97, 0.1);
+    }
+    .features-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(161, 28, 28, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .col-span-2 {
+      grid-column: span 2;
+    }
+    .col-span-3 {
+      grid-column: span 3;
+    }
+    .col-span-6 {
+      grid-column: span 6;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(200, 162, 97, 0.15);
+    }
+    .footer-text {
+      font-family: var(--font-title);
+      font-size: 11px;
+      color: var(--color-gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .arrow-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--color-gold);
+      transition: var(--transition-smooth);
+    }
+    .feature-card:hover .arrow-icon {
+      transform: translateX(4px);
+      color: var(--color-gold-light);
+    }
+    .feature-card.special-card {
+      grid-column: span 6;
+      flex-direction: row;
+      gap: 40px;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(18, 19, 22, 0.95) 0%, rgba(161, 28, 28, 0.08) 100%);
+      border: 1px solid rgba(161, 28, 28, 0.3);
+    }
+    .special-content {
+      flex: 1.5;
+    }
+    .special-badge {
+      display: inline-block;
+      background-color: var(--color-crimson);
+      color: #ffffff;
+      font-family: var(--font-title);
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      padding: 4px 8px;
+      border-radius: 2px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .special-info {
+      flex: 1;
+      background-color: rgba(10, 11, 13, 0.6);
+      border: 1px solid rgba(200, 162, 97, 0.15);
+      padding: 24px;
+      border-radius: 4px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .info-tag {
+      font-family: var(--font-title);
+      font-size: 11px;
+      color: var(--color-crimson-light);
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .info-value {
+      font-family: var(--font-title);
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--color-gold);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .info-desc {
+      font-size: 12px;
+      color: var(--color-parchment-dark);
+    }
+    @media (max-width: 1024px) {
+      .feature-card.special-card {
+        flex-direction: column;
+        gap: 24px;
+        align-items: stretch;
+      }
+      .col-span-2, .col-span-3, .col-span-6 {
+        grid-column: span 6;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -83,6 +198,140 @@
 
   <!-- EXPERIENCE 내용 -->
   <main>
+    <section id="features" class="features">
+      <div class="features-glow"></div>
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-tag">Core Experience</span>
+          <h2 class="section-title">비교 불가능한 모험을 완성하는 5가지 가치</h2>
+          <div class="title-line"></div>
+        </div>
+
+        <div class="features-grid">
+          <!-- 카드 1: 정답 없는 나비효과 -->
+          <div class="col-span-2">
+            <div class="feature-card">
+              <div>
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="6" y1="3" x2="6" y2="15"></line>
+                    <circle cx="18" cy="6" r="3"></circle>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <path d="M18 9a9 9 0 0 1-9 9"></path>
+                  </svg>
+                </div>
+                <p class="card-tag">01. Infinite Choice</p>
+                <h3>정답 없는 나비효과</h3>
+                <p>당신이 던진 사소한 말 한마디, 우연한 호의가 시간이 흘러 거대한 제국을 구하는 영웅담이 되거나 혹은 감당할 수 없는 파멸의 비수가 되어 돌아옵니다. 안전한 정답은 없습니다. 오직 당신만의 정의가 길을 만듭니다.</p>
+              </div>
+              <div class="card-footer">
+                <span class="footer-text">Butterfly Effect</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- 카드 2: 천 개의 엔딩, 만 개의 길 -->
+          <div class="col-span-3">
+            <div class="feature-card">
+              <div>
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                  </svg>
+                </div>
+                <p class="card-tag">02. Absolute Freedom</p>
+                <h3>천 개의 엔딩, 만 개의 탐험로</h3>
+                <p>성문을 지키는 적들을 마주했을 때 어떻게 하시겠습니까? 정면 대결, 은밀한 침투, 설득이나 매수, 심지어 동물과의 대화로 우회할 수도 있습니다. 발더스 게이트의 상상력 경계는 당신의 생각 크기와 완벽히 일치합니다.</p>
+              </div>
+              <div class="card-footer">
+                <span class="footer-text">True Role-playing</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- 카드 3: 깊어지는 동료 유대 -->
+          <div class="col-span-3">
+            <div class="feature-card">
+              <div>
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                </div>
+                <p class="card-tag">03. Living Companions</p>
+                <h3>살아 숨 쉬는 동료들과의 유대</h3>
+                <p>각자의 비극적 과거와 비밀을 품은 동료들. 그들은 인형이 아닙니다. 끊임없이 스스로 주장하며, 당신의 도덕관에 실망하기도 깊이 감응하기도 합니다. 험난한 고난길에서 진정한 영원의 동반자 또는 대치자를 발견해 보세요.</p>
+              </div>
+              <div class="card-footer">
+                <span class="footer-text">Complex Narratives</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- 카드 4: 웅장한 오케스트라 사운드 -->
+          <div class="col-span-2">
+            <div class="feature-card">
+              <div>
+                <div class="card-icon">
+                  <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18V5l12-2v13"></path>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <circle cx="18" cy="16" r="3"></circle>
+                  </svg>
+                </div>
+                <p class="card-tag">04. Orchestral Symphony</p>
+                <h3>귓가에 스며드는 명품 서사시</h3>
+                <p>대서사시의 매 순간 전율과 호흡을 함께 불어넣는 세계적인 사운드트랙. 모닥불 가의 아늑함부터 보스 전투의 폭풍우 속 긴장감까지 온전히 휘감아 들어와 게임 이상의 압도적인 공감각적 문학 예술을 연출합니다.</p>
+              </div>
+              <div class="card-footer">
+                <span class="footer-text">Epic Soundscapes</span>
+                <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- 카드 5: 평생 소장 풀패키지 -->
+          <div class="col-span-6">
+            <div class="feature-card special-card">
+              <div class="special-content">
+                <span class="special-badge">No Extra Cost</span>
+                <p class="card-tag" style="margin-bottom: 4px;">05. True Ownership</p>
+                <h3>추가 과금과 편법 없는 영원한 패키지 소장</h3>
+                <p style="margin-top: 12px; font-size: 14px; line-height: 1.8; color: var(--color-parchment-dark);">
+                  인게임 추가 뽑기 유도나 지루하게 시간만 뺏는 일일 퀘스트에 지치셨나요? 오직 단 한 번의 투입으로 150시간 분량의 최정상급 명작 서사시를 아무 제약 없이 소장할 수 있습니다. 지적 서재의 정통 고전문학 장편 전집을 갖춘 듯한 온전하고 가치 있는 기쁨을 제안합니다.
+                </p>
+              </div>
+              <div class="special-info">
+                <span class="info-tag">COMPLETE EDITION</span>
+                <span class="info-value">100% Full Spec</span>
+                <p class="info-desc">추가 DLC 강제 결제 없음</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <section class="experience-section">
       <div class="container">
         <div class="section-title-wrap">

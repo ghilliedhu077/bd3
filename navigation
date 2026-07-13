@@ -1,0 +1,18 @@
+// 모바일 햄버거 메뉴 토글 기능 (동일 폴더 내 모든 HTML 하단에 공유)
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  if (menu.style.display === 'block') {
+    menu.style.display = 'none';
+  } else {
+    menu.style.display = 'block';
+  }
+}
+
+---
+
+### 💡 연결 시 주의할 점 (꿀팁)
+
+1. **`active` 매핑 맞추기**: 
+   * 예를 들어 `story.html` 파일로 오셨다면, 헤더 컴포넌트 내부의 `id="nav-story"`와 `id="mob-story"` 태그에만 `class="nav-link active"`로 명명해 주시고, 나머지 링크는 `class="nav-link"`로 `active` 클래스를 빼주시면 알아서 해당 페이지 위치에 황동 밑줄 효과가 부드럽게 점등됩니다.
+2. **반응형 체크**:
+   * 브라우저 크기를 스마트폰 폭(768px 이하)으로 줄였을 때 우측 네비게이션이 완전히 숨겨지고 클래식한 햄버거 아이콘(`menu-toggle`)이 활성화되는지 로컬 테스트로 확인해 보세요.
