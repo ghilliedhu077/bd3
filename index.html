@@ -10,14 +10,84 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
   
-  <!-- 구글 폰트 링크 아래에 삽입 -->
-  <link rel="stylesheet" href="style.css">
+  <!-- Tailwind CSS CDN 및 설정 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#0a0b0d',
+            'obsidian-light': '#121316',
+            'obsidian-deep': '#050608',
+            gold: '#c8a261',
+            'gold-dark': '#a88344',
+            'gold-light': '#e6cc9c',
+            crimson: '#a11c1c',
+            'crimson-light': '#cf3c3c',
+            parchment: '#dfd5c6',
+            'parchment-dark': '#b3a99a',
+          },
+          fontFamily: {
+            title: ['Cinzel', 'serif'],
+            body: ['Alegreya', 'serif'],
+          },
+          transitionTimingFunction: {
+            'smooth': 'cubic-bezier(0.16, 1, 0.3, 1)',
+          },
+          animation: {
+            'rune-rotate': 'runeRotate 2s linear infinite',
+            'spin-slow': 'spin 10s linear infinite',
+          },
+          keyframes: {
+            runeRotate: {
+              '100%': { transform: 'rotate(360deg)', filter: 'drop-shadow(0 0 15px #c8a261)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- 커스텀 스타일 (Tailwind 유틸리티로 만들기 복잡한 요소들) -->
+  <style type="text/tailwindcss">
+    @layer base {
+      html { scroll-behavior: smooth; }
+      ::selection {
+        background-color: theme('colors.crimson');
+        color: #ffffff;
+      }
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: theme('colors.obsidian'); }
+      ::-webkit-scrollbar-thumb {
+        background: theme('colors.gold');
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover { background: theme('colors.crimson'); }
+    }
+
+    @layer components {
+      .nav-active {
+        color: theme('colors.gold');
+      }
+      .nav-active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: theme('colors.gold');
+        box-shadow: 0 0 8px theme('colors.gold');
+      }
+    }
+  </style>
 </head>
-<body>
+<body class="bg-obsidian text-parchment font-body overflow-x-hidden leading-[1.6]">
 
   <!-- 글로벌 트랜지션 로더 -->
-  <div class="screen-loader" id="screen-loader">
-    <svg class="loader-rune" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+  <div class="fixed inset-0 bg-obsidian-deep z-[9999] flex justify-center items-center transition-opacity duration-400 ease-out pointer-events-none" id="screen-loader">
+    <svg class="w-20 h-20 text-gold animate-rune-rotate" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
       <circle cx="50" cy="50" r="40" stroke-dasharray="10 5" />
       <polygon points="50,15 80,75 20,75" stroke-linejoin="round" />
       <polygon points="50,85 80,25 20,25" stroke-linejoin="round" />
@@ -26,18 +96,18 @@
   </div>
 
   <!-- 가상 뮤직 플레이어 -->
-  <div class="bgm-player" id="music-player">
-    <div class="vinyl" id="vinyl-disk">
+  <div class="fixed bottom-6 right-6 z-[1000] bg-obsidian-light/95 border border-gold/40 py-3 px-4 rounded flex items-center gap-4 shadow-[0_10px_30px_rgba(0,0,0,0.6)] backdrop-blur-sm transition-all duration-400 ease-smooth hover:border-gold" id="music-player">
+    <div class="w-10 h-10 rounded-full border border-gold/30 bg-obsidian flex items-center justify-center text-gold animate-spin-slow" id="vinyl-disk">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"></circle>
         <circle cx="12" cy="12" r="3"></circle>
       </svg>
     </div>
-    <div class="bgm-info">
-      <p class="bgm-tag">BALDUR'S GATE III</p>
-      <p class="bgm-title" id="bgm-title">Main Theme (Orchestra)</p>
+    <div class="w-[120px]">
+      <p class="font-title text-[10px] text-gold tracking-[0.1em]">BALDUR'S GATE III</p>
+      <p class="text-[11px] text-parchment-dark whitespace-nowrap overflow-hidden text-ellipsis" id="bgm-title">Main Theme (Orchestra)</p>
     </div>
-    <button onclick="toggleMusic()" class="btn-play-toggle" aria-label="음악 재생/정지 토글">
+    <button onclick="toggleMusic()" class="bg-transparent border-none text-gold cursor-pointer flex items-center justify-center p-1.5 rounded-full transition-all duration-400 hover:bg-gold/10" aria-label="음악 재생/정지 토글">
       <svg id="music-btn-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="6" y="4" width="4" height="16"></rect>
         <rect x="14" y="4" width="4" height="16"></rect>
@@ -46,28 +116,27 @@
   </div>
 
   <!-- 글로벌 헤더 (GNB) -->
-  <header class="global-gnb-header">
-    <div class="container">
-      <div class="header-wrap">
-        <!-- 로고 (클릭 시 메인 홈 이동) -->
-        <a href="index.html" class="logo">
+  <header class="fixed top-0 left-0 w-full z-[100] bg-gradient-to-b from-obsidian-deep/70 to-transparent border-b border-gold/15 backdrop-blur-md transition-all duration-400 ease-smooth">
+    <div class="max-w-[1200px] mx-auto px-6">
+      <div class="flex justify-between items-center py-5">
+        <!-- 로고 -->
+        <a href="index.html" class="font-title text-xl font-extrabold text-gold tracking-[0.15em] transition-all duration-400 ease-smooth flex items-center gap-2.5 hover:text-gold-light">
           BALDUR'S GATE III
         </a>
         
         <!-- 데스크톱 네비게이션 바 -->
-        <nav id="main-nav">
-          <!-- 현재 페이지에 맞게 class="active"를 옮겨서 지정하세요 -->
-          <a href="index.html" id="nav-home" class="nav-link active">HOME</a>
-          <a href="story.html" id="nav-story" class="nav-link">THE STORY</a>
-          <a href="experience.html" id="nav-experience" class="nav-link">THE EXPERIENCE</a>
-          <a href="roll.html" id="nav-roll" class="nav-link">ROLL THE DICE</a>
+        <nav id="main-nav" class="hidden md:flex items-center gap-7">
+          <a href="index.html" id="nav-home" class="font-title text-[11px] text-parchment-dark tracking-[0.15em] transition-all duration-400 ease-smooth relative py-1.5 hover:text-gold nav-active">HOME</a>
+          <a href="story.html" id="nav-story" class="font-title text-[11px] text-parchment-dark tracking-[0.15em] transition-all duration-400 ease-smooth relative py-1.5 hover:text-gold">THE STORY</a>
+          <a href="experience.html" id="nav-experience" class="font-title text-[11px] text-parchment-dark tracking-[0.15em] transition-all duration-400 ease-smooth relative py-1.5 hover:text-gold">THE EXPERIENCE</a>
+          <a href="roll.html" id="nav-roll" class="font-title text-[11px] text-parchment-dark tracking-[0.15em] transition-all duration-400 ease-smooth relative py-1.5 hover:text-gold">ROLL THE DICE</a>
           
           <!-- 행동 유도 버튼 -->
-          <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="btn-header-cta">PLAY NOW</a>
+          <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="border border-gold/40 py-2 px-4 text-gold font-title text-[11px] tracking-[0.15em] transition-all duration-400 ease-smooth hover:border-gold hover:bg-gold/5 hover:text-gold-light hover:shadow-[0_0_10px_rgba(200,162,97,0.15)]">PLAY NOW</a>
         </nav>
         
         <!-- 모바일 햄버거 메뉴 토글 버튼 -->
-        <button onclick="toggleMobileMenu()" class="menu-toggle" aria-label="모바일 메뉴 열기/닫기">
+        <button onclick="toggleMobileMenu()" class="block md:hidden bg-transparent border-none text-gold cursor-pointer" aria-label="모바일 메뉴 열기/닫기">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="12" x2="21" y2="12"></line>
             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -78,71 +147,72 @@
     </div>
     
     <!-- 모바일 아코디언 드롭다운 메뉴 -->
-    <div id="mobile-menu" class="mobile-nav">
-      <a href="index.html" id="mob-home" class="nav-link active">HOME</a>
-      <a href="story.html" id="mob-story" class="nav-link">THE STORY</a>
-      <a href="experience.html" id="mob-experience" class="nav-link">THE EXPERIENCE</a>
-      <a href="roll.html" id="mob-roll" class="nav-link">ROLL THE DICE</a>
-      <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="mob-cta-link">PLAY NOW</a>
+    <div id="mobile-menu" class="hidden fixed top-[73px] left-0 w-full bg-obsidian-light border-b border-gold/20 py-4 px-6 z-[99]">
+      <a href="index.html" class="block py-3 font-title text-xs text-gold font-bold tracking-[0.15em]">HOME</a>
+      <a href="story.html" class="block py-3 font-title text-xs text-parchment tracking-[0.15em]">THE STORY</a>
+      <a href="experience.html" class="block py-3 font-title text-xs text-parchment tracking-[0.15em]">THE EXPERIENCE</a>
+      <a href="roll.html" class="block py-3 font-title text-xs text-parchment tracking-[0.15em]">ROLL THE DICE</a>
+      <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="block py-3 font-title text-xs text-parchment tracking-[0.15em]">PLAY NOW</a>
     </div>
   </header>
 
   <!-- HOME 페이지 주 내용 -->
   <main>
-    <section class="hero">
-      <div class="hero-glow"></div>
-      <div class="container" style="position: relative; z-index: 10;">
-        <div class="hero-badge">
-          <p>A Brand New Masterpiece Narrative</p>
+    <section class="relative min-h-[calc(100vh-74px)] mt-[74px] flex flex-col justify-center items-center text-center py-15 px-6 bg-[linear-gradient(to_bottom,rgba(10,11,13,0.5),rgba(10,11,13,1)),url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,162,97,0.08)_0%,transparent_75%)] pointer-events-none"></div>
+      
+      <div class="max-w-[1200px] mx-auto px-6 relative z-10 w-full">
+        <div class="inline-block border-b pb-2 mb-6 [border-image:linear-gradient(to_right,transparent,theme(colors.gold),transparent)_1]">
+          <p class="font-title text-[11px] tracking-[0.3em] text-gold uppercase">A Brand New Masterpiece Narrative</p>
         </div>
         
-        <h1>
-          <span class="hero-subtitle">"남이 만든 결말은 지루하니까."</span>
-          <span class="hero-title">이제, 당신이 주인공이 될 차례</span>
+        <h1 class="mb-6">
+          <span class="font-title text-[16px] md:text-[22px] font-light tracking-[0.05em] italic text-parchment-dark block mb-3">"남이 만든 결말은 지루하니까."</span>
+          <span class="font-title text-[36px] md:text-[56px] font-bold tracking-[0.05em] bg-gradient-to-r from-[#f2eae1] via-gold to-[#b3a99a] bg-clip-text text-transparent block leading-[1.2]">이제, 당신이 주인공이 될 차례</span>
         </h1>
         
-        <p class="hero-description">
+        <p class="max-w-[650px] mx-auto mb-10 text-[15px] md:text-[18px] text-parchment-dark font-light leading-relaxed">
           독서와 영화를 사랑하는 당신에게 권하는 단 하나의 위대한 걸작.<br>
           스토리의 단순 소비자를 넘어, 당신의 모든 선택이 하나의 역사가 되는 세계로 초대합니다.
         </p>
 
-        <div class="hero-buttons">
-          <a href="story.html" class="btn btn-primary">더 넓은 이야기 속으로</a>
-          <a href="roll.html" class="btn btn-secondary">당신의 지혜 판정하기</a>
+        <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+          <a href="story.html" class="inline-flex items-center justify-center py-4 px-8 font-title text-[11px] font-bold tracking-[0.2em] uppercase rounded-sm transition-all duration-400 ease-smooth bg-crimson text-white border border-gold/30 shadow-[0_4px_14px_rgba(161,28,28,0.2)] hover:bg-crimson-light hover:shadow-[0_6px_20px_rgba(161,28,28,0.3)] hover:-translate-y-0.5 w-full md:w-auto">더 넓은 이야기 속으로</a>
+          <a href="roll.html" class="inline-flex items-center justify-center py-4 px-8 font-title text-[11px] font-bold tracking-[0.2em] uppercase rounded-sm transition-all duration-400 ease-smooth bg-obsidian-light/80 text-gold border border-gold/40 hover:bg-gold/10 hover:border-gold w-full md:w-auto">당신의 지혜 판정하기</a>
         </div>
       </div>
     </section>
 
     <!-- 게이트웨이 그리드 -->
-    <section class="home-gateway">
-      <div class="container">
-        <div class="section-title-wrap">
-          <span class="section-tag">Explore The Gate</span>
-          <h2 class="section-title">남이 만든 이야기는 지루합니다.</h2>
-          <div class="title-line"></div>
+    <section class="py-[100px] bg-obsidian-light">
+      <div class="max-w-[1200px] mx-auto px-6">
+        <div class="text-center max-w-[700px] mx-auto mb-[60px]">
+          <span class="font-title text-[11px] tracking-[0.25em] text-gold uppercase block mb-3">Explore The Gate</span>
+          <h2 class="font-title text-[28px] md:text-[36px] text-parchment font-bold tracking-[0.05em]">남이 만든 이야기는 지루합니다.</h2>
+          <div class="w-[100px] h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-5"></div>
         </div>
 
-        <div class="gateway-grid">
-          <div class="gateway-card">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="group bg-obsidian border border-gold/10 py-10 px-8 rounded flex flex-col justify-between transition-all duration-400 ease-smooth hover:shadow-[0_0_25px_rgba(200,162,97,0.12)] hover:border-gold hover:-translate-y-1">
             <div>
-              <div class="gateway-icon">
+              <div class="text-gold mb-6">
                 <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
                   <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                 </svg>
               </div>
-              <h3>아쉬운 소설의 결말</h3>
-              <p>밤을 새워 읽은 판타지 소설의 마지막 장, 작가가 정해놓은 비극적인 혹은 진부한 엔딩에 한숨지은 적이 없으신가요?</p>
+              <h3 class="font-title text-[20px] text-parchment mb-4">아쉬운 소설의 결말</h3>
+              <p class="text-[14px] text-parchment-dark leading-[1.7] mb-6">밤을 새워 읽은 판타지 소설의 마지막 장, 작가가 정해놓은 비극적인 혹은 진부한 엔딩에 한숨지은 적이 없으신가요?</p>
             </div>
-            <a href="story.html" class="gateway-link">
+            <a href="story.html" class="font-title text-[11px] text-gold tracking-[0.1em] inline-flex items-center gap-2 transition-all duration-400 ease-smooth group-hover:text-gold-light group-hover:translate-x-1">
               <span>스토리텔링 깊이 보기</span>
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
 
-          <div class="gateway-card">
+          <div class="group bg-obsidian border border-gold/10 py-10 px-8 rounded flex flex-col justify-between transition-all duration-400 ease-smooth hover:shadow-[0_0_25px_rgba(200,162,97,0.12)] hover:border-gold hover:-translate-y-1">
             <div>
-              <div class="gateway-icon">
+              <div class="text-gold mb-6">
                 <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                   <circle cx="9" cy="7" r="4"></circle>
@@ -150,26 +220,26 @@
                   <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
               </div>
-              <h3>영화 속 답답한 판단</h3>
-              <p>스크린 속 주인공이 엉뚱한 결정을 내릴 때, “내가 만약 그 상황이었다면 다른 선택을 했을 텐데!”라며 답답해하지 않으셨나요?</p>
+              <h3 class="font-title text-[20px] text-parchment mb-4">영화 속 답답한 판단</h3>
+              <p class="text-[14px] text-parchment-dark leading-[1.7] mb-6">스크린 속 주인공이 엉뚱한 결정을 내릴 때, “내가 만약 그 상황이었다면 다른 선택을 했을 텐데!”라며 답답해하지 않으셨나요?</p>
             </div>
-            <a href="experience.html" class="gateway-link">
+            <a href="experience.html" class="font-title text-[11px] text-gold tracking-[0.1em] inline-flex items-center gap-2 transition-all duration-400 ease-smooth group-hover:text-gold-light group-hover:translate-x-1">
               <span>동료 프로필 및 가치 보기</span>
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
           </div>
 
-          <div class="gateway-card">
+          <div class="group bg-obsidian border border-gold/10 py-10 px-8 rounded flex flex-col justify-between transition-all duration-400 ease-smooth hover:shadow-[0_0_25px_rgba(200,162,97,0.12)] hover:border-gold hover:-translate-y-1">
             <div>
-              <div class="gateway-icon">
+              <div class="text-gold mb-6">
                 <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                   <polygon points="5 3 19 12 5 21 5 3"></polygon>
                 </svg>
               </div>
-              <h3>타인이 지어낸 길</h3>
-              <p>우리는 일생 동안 수없이 많은 콘텐츠를 소비하면서도, 왜 언제나 타인이 세심하게 설계해 둔 외길만을 수동적으로 걸어가야 했을까요?</p>
+              <h3 class="font-title text-[20px] text-parchment mb-4">타인이 지어낸 길</h3>
+              <p class="text-[14px] text-parchment-dark leading-[1.7] mb-6">우리는 일생 동안 수없이 많은 콘텐츠를 소비하면서도, 왜 언제나 타인이 세심하게 설계해 둔 외길만을 수동적으로 걸어가야 했을까요?</p>
             </div>
-            <a href="roll.html" class="gateway-link">
+            <a href="roll.html" class="font-title text-[11px] text-gold tracking-[0.1em] inline-flex items-center gap-2 transition-all duration-400 ease-smooth group-hover:text-gold-light group-hover:translate-x-1">
               <span>주사위 굴리기 시뮬레이션</span>
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
@@ -180,22 +250,22 @@
   </main>
 
   <!-- 글로벌 푸터 -->
-  <footer>
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <h4>BALDUR'S GATE III</h4>
-          <p>"남이 만든 결말은 지루하니까. 이제 당신이 주인공이 될 차례."</p>
+  <footer class="bg-obsidian-deep border-t border-gold/20 pt-[60px] pb-10">
+    <div class="max-w-[1200px] mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-8 mb-10">
+        <div>
+          <h4 class="font-title text-[14px] text-gold tracking-[0.15em] mb-2">BALDUR'S GATE III</h4>
+          <p class="text-[12px] text-parchment-dark">"남이 만든 결말은 지루하니까. 이제 당신이 주인공이 될 차례."</p>
         </div>
-        <div class="footer-links">
-          <a href="#">이용약관</a>
-          <span class="footer-divider">|</span>
-          <a href="#">개인정보처리방침</a>
-          <span class="footer-divider">|</span>
-          <a href="#">여정 지원 가이드</a>
+        <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6 text-xs text-parchment-dark">
+          <a href="#" class="transition-colors duration-400 hover:text-gold">이용약관</a>
+          <span class="text-gold/20 hidden md:inline">|</span>
+          <a href="#" class="transition-colors duration-400 hover:text-gold">개인정보처리방침</a>
+          <span class="text-gold/20 hidden md:inline">|</span>
+          <a href="#" class="transition-colors duration-400 hover:text-gold">여정 지원 가이드</a>
         </div>
       </div>
-      <div class="footer-bottom">
+      <div class="border-t border-gold/5 pt-8 text-center text-[10px] text-parchment-dark">
         <p>&copy; 2026 Larian Studios. All rights reserved. 이 작업물은 명작 정통 판타지 스토리텔링의 한계를 다각화하기 위해 고안된 MPA 가상 웹포트폴리오입니다.</p>
       </div>
     </div>
@@ -206,18 +276,14 @@
     window.addEventListener('DOMContentLoaded', () => {
       const loader = document.getElementById('screen-loader');
       setTimeout(() => {
-        loader.classList.add('hidden');
+        loader.classList.add('opacity-0');
       }, 150);
     });
 
-    // 모바일 햄버거 메뉴 토글 기능 (동일 폴더 내 모든 HTML 하단에 공유)
+    // 모바일 햄버거 메뉴 토글 기능
     function toggleMobileMenu() {
       const menu = document.getElementById('mobile-menu');
-      if (menu.style.display === 'block') {
-        menu.style.display = 'none';
-      } else {
-        menu.style.display = 'block';
-      }
+      menu.classList.toggle('hidden');
     }
 
     // 로컬 스토리지 연계형 BGM 엔진
