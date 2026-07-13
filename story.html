@@ -11,7 +11,167 @@
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
   
   <!-- 구글 폰트 링크 아래에 삽입 -->
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* 스토리 설명 페이지 전용 레이아웃 및 퀴즈 컴포넌트 추가 디자인 */
+    .story-section {
+      background-color: var(--color-obsidian);
+      padding: 120px 0 80px;
+    }
+
+    .story-hero-intro {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      margin-bottom: 100px;
+    }
+
+    .story-hero-text {
+      flex: 1;
+    }
+
+    .story-hero-text h3 {
+      font-family: var(--font-title);
+      font-size: 28px;
+      color: var(--color-gold);
+      margin-bottom: 20px;
+    }
+
+    .story-hero-text p {
+      font-size: 16px;
+      color: var(--color-parchment);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .story-hero-visual {
+      flex: 1;
+      background-color: var(--color-obsidian-light);
+      border: 1px solid rgba(200, 162, 97, 0.2);
+      border-radius: 4px;
+      padding: 40px;
+      position: relative;
+    }
+
+    .book-frame {
+      border: 2px dashed rgba(200, 162, 97, 0.15);
+      padding: 24px;
+      text-align: center;
+    }
+
+    .book-frame p {
+      font-style: italic;
+      font-size: 15px;
+      color: var(--color-parchment-dark);
+    }
+
+    /* 비교 분석 테이블 */
+    .comparison-section {
+      margin-bottom: 100px;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 40px;
+      background-color: var(--color-obsidian-light);
+      border: 1px solid rgba(200, 162, 97, 0.15);
+    }
+
+    .comparison-table th, .comparison-table td {
+      padding: 20px;
+      text-align: left;
+      border-bottom: 1px solid rgba(200, 162, 97, 0.1);
+    }
+
+    .comparison-table th {
+      background-color: rgba(200, 162, 97, 0.05);
+      font-family: var(--font-title);
+      font-size: 13px;
+      color: var(--color-gold);
+      letter-spacing: 0.1em;
+    }
+
+    .comparison-table td strong {
+      color: var(--color-gold-light);
+    }
+
+    /* 모험가 성향 자가진단 */
+    .personality-quiz {
+      background-color: var(--color-obsidian-light);
+      border: 1px solid rgba(200, 162, 97, 0.25);
+      border-radius: 4px;
+      padding: 50px 40px;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .quiz-title {
+      font-family: var(--font-title);
+      font-size: 22px;
+      color: var(--color-gold-light);
+      margin-bottom: 16px;
+    }
+
+    .quiz-question {
+      font-size: 18px;
+      color: var(--color-parchment);
+      margin-bottom: 32px;
+      font-style: italic;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .quiz-btn {
+      background-color: var(--color-obsidian);
+      border: 1px solid rgba(200, 162, 97, 0.3);
+      color: var(--color-parchment);
+      padding: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: var(--transition-smooth);
+      text-align: left;
+    }
+
+    .quiz-btn:hover {
+      border-color: var(--color-gold);
+      background-color: rgba(200, 162, 97, 0.08);
+      color: var(--color-gold-light);
+      transform: translateX(4px);
+    }
+
+    .quiz-result-box {
+      display: none;
+      margin-top: 24px;
+      padding: 24px;
+      background-color: rgba(161, 28, 28, 0.08);
+      border: 1px dashed var(--color-crimson);
+      border-radius: 4px;
+      text-align: left;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 1024px) {
+      .story-hero-intro {
+        flex-direction: column;
+        gap: 32px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -46,21 +206,26 @@
   </div>
 
   <!-- 글로벌 헤더 (GNB) -->
-  <header>
+  <header class="global-gnb-header">
     <div class="container">
       <div class="header-wrap">
+        <!-- 로고 (클릭 시 메인 홈 이동) -->
         <a href="index.html" class="logo">
           BALDUR'S GATE III
         </a>
         
+        <!-- 데스크톱 네비게이션 바 -->
         <nav id="main-nav">
-          <a href="index.html">HOME</a>
-          <a href="story.html" class="active">THE STORY</a>
-          <a href="experience.html">THE EXPERIENCE</a>
-          <a href="roll.html">ROLL THE DICE</a>
+          <a href="index.html" id="nav-home" class="nav-link">HOME</a>
+          <a href="story.html" id="nav-story" class="nav-link active">THE STORY</a>
+          <a href="experience.html" id="nav-experience" class="nav-link">THE EXPERIENCE</a>
+          <a href="roll.html" id="nav-roll" class="nav-link">ROLL THE DICE</a>
+          
+          <!-- 행동 유도 버튼 -->
           <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="btn-header-cta">PLAY NOW</a>
         </nav>
         
+        <!-- 모바일 햄버거 메뉴 토글 버튼 -->
         <button onclick="toggleMobileMenu()" class="menu-toggle" aria-label="모바일 메뉴 열기/닫기">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -71,13 +236,13 @@
       </div>
     </div>
     
-    <!-- 모바일 메뉴 드롭다운 -->
+    <!-- 모바일 아코디언 드롭다운 메뉴 -->
     <div id="mobile-menu" class="mobile-nav">
-      <a href="index.html">HOME</a>
-      <a href="story.html" class="active">THE STORY</a>
-      <a href="experience.html">THE EXPERIENCE</a>
-      <a href="roll.html">ROLL THE DICE</a>
-      <a href="https://store.steampowered.com" target="_blank" rel="noopener" style="color: var(--color-gold); font-weight: bold;">PLAY NOW</a>
+      <a href="index.html" id="mob-home" class="nav-link">HOME</a>
+      <a href="story.html" id="mob-story" class="nav-link active">THE STORY</a>
+      <a href="experience.html" id="mob-experience" class="nav-link">THE EXPERIENCE</a>
+      <a href="roll.html" id="mob-roll" class="nav-link">ROLL THE DICE</a>
+      <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="mob-cta-link">PLAY NOW</a>
     </div>
   </header>
 
@@ -191,10 +356,14 @@
       }, 150);
     });
 
-    // 모바일 메뉴 제어
+    // 모바일 햄버거 메뉴 토글 기능 (동일 폴더 내 모든 HTML 하단에 공유)
     function toggleMobileMenu() {
       const menu = document.getElementById('mobile-menu');
-      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+      if (menu.style.display === 'block') {
+        menu.style.display = 'none';
+      } else {
+        menu.style.display = 'block';
+      }
     }
 
     // 자가진단 퀴즈 연출
