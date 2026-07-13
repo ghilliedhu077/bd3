@@ -10,8 +10,193 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
   
-  <!-- 구글 폰트 링크 아래에 삽입 -->
-<link rel="stylesheet" href="style.css">
+  <!-- 공통 외부 스타일시트 연결 -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ROLL THE DICE 페이지 전용 레이아웃 및 3D 주사위 개별 특화 CSS */
+    .roll-page-wrapper {
+      background-color: var(--color-obsidian-deep);
+      padding: 120px 0 80px;
+    }
+
+    .interactive-layout {
+      display: flex;
+      gap: 48px;
+      align-items: flex-start;
+    }
+
+    .dice-main {
+      flex: 1.2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .dice-sidebar {
+      flex: 0.8;
+      background-color: var(--color-obsidian-light);
+      border: 1px solid rgba(200, 162, 97, 0.2);
+      border-radius: 4px;
+      padding: 32px;
+      min-height: 450px;
+    }
+
+    .sidebar-title {
+      font-family: var(--font-title);
+      font-size: 16px;
+      color: var(--color-gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(200, 162, 97, 0.2);
+      padding-bottom: 12px;
+    }
+
+    .history-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px;
+      background-color: var(--color-obsidian);
+      border-left: 2px solid var(--color-gold);
+      font-size: 13px;
+    }
+
+    .history-item.critical {
+      border-left-color: var(--color-crimson);
+      background-color: rgba(161, 28, 28, 0.05);
+    }
+
+    .history-value {
+      font-weight: bold;
+      font-family: var(--font-title);
+    }
+
+    .dice-box {
+      background-color: rgba(18, 19, 22, 0.6);
+      border: 1px solid rgba(200, 162, 97, 0.2);
+      padding: 50px 32px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .dice-container {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      cursor: pointer;
+      margin-bottom: 24px;
+      perspective: 1000px;
+    }
+
+    .dice-svg {
+      width: 100%;
+      height: 100%;
+      color: var(--color-gold);
+      transition: var(--transition-smooth);
+      filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+    }
+
+    .dice-container:hover .dice-svg {
+      color: var(--color-gold-light);
+      filter: drop-shadow(0 0 12px rgba(200, 162, 97, 0.35));
+    }
+
+    .dice-number {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-title);
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--color-gold);
+      user-select: none;
+      transition: var(--transition-smooth);
+    }
+
+    /* 3D 회전 + 가속 입체 애니메이션 */
+    @keyframes roll3d {
+      0% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
+        filter: drop-shadow(0 0 5px rgba(200, 162, 97, 0.2));
+      }
+      15% {
+        transform: rotateX(150deg) rotateY(-120deg) rotateZ(60deg) scale(1.15);
+        filter: drop-shadow(0 0 20px var(--color-crimson));
+      }
+      40% {
+        transform: rotateX(420deg) rotateY(240deg) rotateZ(-120deg) scale(0.85);
+        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.8));
+      }
+      70% {
+        transform: rotateX(780deg) rotateY(600deg) rotateZ(240deg) scale(1.2);
+        filter: drop-shadow(0 0 30px var(--color-gold));
+      }
+      85% {
+        transform: rotateX(960deg) rotateY(900deg) rotateZ(300deg) scale(0.95);
+        filter: drop-shadow(0 0 15px var(--color-gold-light));
+      }
+      100% {
+        transform: rotateX(1120deg) rotateY(1120deg) rotateZ(360deg) scale(1);
+        filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.6));
+      }
+    }
+
+    .dice-rolling {
+      animation: roll3d 1.3s cubic-bezier(0.18, 0.89, 0.32, 1.1) forwards;
+    }
+
+    .dice-result {
+      margin-top: 24px;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: var(--transition-smooth);
+      width: 100%;
+    }
+
+    .result-msg {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--color-gold);
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .result-sub {
+      font-size: 13px;
+      color: var(--color-parchment-dark);
+      line-height: 1.7;
+      max-width: 460px;
+      padding: 0 10px;
+      text-align: center;
+    }
+
+    @media (max-width: 1024px) {
+      .interactive-layout {
+        flex-direction: column;
+      }
+      .dice-sidebar {
+        width: 100%;
+        min-height: auto;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -46,21 +231,26 @@
   </div>
 
   <!-- 글로벌 헤더 (GNB) -->
-  <header>
+  <header class="global-gnb-header">
     <div class="container">
       <div class="header-wrap">
+        <!-- 로고 (클릭 시 메인 홈 이동) -->
         <a href="index.html" class="logo">
           BALDUR'S GATE III
         </a>
         
+        <!-- 데스크톱 네비게이션 바 -->
         <nav id="main-nav">
-          <a href="index.html">HOME</a>
-          <a href="story.html">THE STORY</a>
-          <a href="experience.html">THE EXPERIENCE</a>
-          <a href="roll.html" class="active">ROLL THE DICE</a>
+          <a href="index.html" id="nav-home" class="nav-link">HOME</a>
+          <a href="story.html" id="nav-story" class="nav-link">THE STORY</a>
+          <a href="experience.html" id="nav-experience" class="nav-link">THE EXPERIENCE</a>
+          <a href="roll.html" id="nav-roll" class="nav-link active">ROLL THE DICE</a>
+          
+          <!-- 행동 유도 버튼 -->
           <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="btn-header-cta">PLAY NOW</a>
         </nav>
         
+        <!-- 모바일 햄버거 메뉴 토글 버튼 -->
         <button onclick="toggleMobileMenu()" class="menu-toggle" aria-label="모바일 메뉴 열기/닫기">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -71,13 +261,13 @@
       </div>
     </div>
     
-    <!-- 모바일 메뉴 드롭다운 -->
+    <!-- 모바일 아코디언 드롭다운 메뉴 -->
     <div id="mobile-menu" class="mobile-nav">
-      <a href="index.html">HOME</a>
-      <a href="story.html">THE STORY</a>
-      <a href="experience.html">THE EXPERIENCE</a>
-      <a href="roll.html" class="active">ROLL THE DICE</a>
-      <a href="https://store.steampowered.com" target="_blank" rel="noopener" style="color: var(--color-gold); font-weight: bold;">PLAY NOW</a>
+      <a href="index.html" id="mob-home" class="nav-link">HOME</a>
+      <a href="story.html" id="mob-story" class="nav-link">THE STORY</a>
+      <a href="experience.html" id="mob-experience" class="nav-link">THE EXPERIENCE</a>
+      <a href="roll.html" id="mob-roll" class="nav-link active">ROLL THE DICE</a>
+      <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="mob-cta-link">PLAY NOW</a>
     </div>
   </header>
 
@@ -172,10 +362,14 @@
       }, 150);
     });
 
-    // 모바일 메뉴 제어
+    // 모바일 햄버거 메뉴 토글 기능 (동일 폴더 내 모든 HTML 하단에 공유)
     function toggleMobileMenu() {
       const menu = document.getElementById('mobile-menu');
-      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+      if (menu.style.display === 'block') {
+        menu.style.display = 'none';
+      } else {
+        menu.style.display = 'block';
+      }
     }
 
     // 3D 운명 주사위 시네마틱 엔진
@@ -209,28 +403,68 @@
         let color = "";
         let isCritical = false;
 
+        // 세분화된 12단계 판정 결과 분기문
         if (rollResult === 20) {
-          message = `🎲 [대성공 - CRITICAL 20]`;
-          subMessage = "경비 대장이 당신의 고결한 호소력에 압도당해 무기를 내동댕이쳤습니다. 그는 눈물을 흘리며 통행증과 비밀 창고의 마법 금색 열쇠를 고스란히 건넵니다. <br><br><strong>💡 또 다른 선택지 암시:</strong> 이 판정이 완전히 실패했더라도 절망할 필요가 없었습니다. 지하 지저분한 하수구 아래에 마녀 에텔의 잔당들이 파둔 극비 비밀 탈출 통로가 귀중하게 배치되어 있었기 때문입니다.";
-          color = "#10b981";
+          message = `🎲 [대성공 - CRITICAL 20] 완벽한 전설적 돌파`;
+          subMessage = "<strong>당신의 고결하고 당당한 호소력이 경비 대장의 신념을 흔들었습니다.</strong> 그는 눈물을 훔치며 요새 문을 활짝 열어주고 군수창고 비밀 황동 열쇠까지 몰래 건넵니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 비록 이 판정이 완전히 실패했더라도 방법은 있었습니다. 요새 우측 수풀 뒤편에 무너진 보루 벽을 기어올라 침투하거나, 사념 마법으로 성문 위의 도브(비둘기)를 조종해 밧줄을 아래로 떨어뜨리는 등의 기상천외한 대안이 설계되어 있었습니다.";
+          color = "#10b981"; // 에메랄드 그린
           isCritical = true;
-        } else if (rollResult >= 15) {
-          message = `🎲 [판정 성공 - 수치 ${rollResult}]`;
-          subMessage = "당신의 유창한 설득이 통했습니다. 비록 대장이 흔쾌히 돕지는 않지만, 요새의 사방 경비초소를 관통할 안전 통행증을 정직하게 발급해 주었습니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 대장과 대화할 필요 없이 영약 통들을 불화살로 요격해 주변 요새 군대를 전면 혼란에 빠뜨린 뒤 가벼운 도약 마법으로 정문을 완전히 지나쳐 돌파할 수도 있었습니다.";
+        } 
+        else if (rollResult === 19) {
+          message = `🎲 [초인적 성공 - 판정값 19] 완벽한 군중 심리 통제`;
+          subMessage = "<strong>대장을 넘어 주변 경비병들까지 당신의 영웅적 대의명분에 완전히 매료되었습니다.</strong> 그들은 경의를 표하며 요새 가이드 역할을 해줄 정예 호위병 2명까지 동행시킵니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 이들이 당신을 적대했다면 은밀히 투명 마법을 전원에게 시전한 후, 대장의 가죽 주머니에서 정문 통행 도장을 몰래 복사해 조용히 관통하는 암살자 특유의 슬릭 루트도 존재했습니다.";
+          color = "#059669";
+        } 
+        else if (rollResult >= 17) {
+          message = `🎲 [탁월한 성공 - 판정값 ${rollResult}] 지적인 신분 위장`;
+          subMessage = "<strong>당신의 정교한 서류 위조와 외교적 태도가 대장으로 하여금 당신을 황실 총독의 특별 비밀 감사관으로 굳게 믿게 만들었습니다.</strong> 대장은 극진한 경례를 보내며 요새의 상단 귀빈 순찰로를 개방합니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 신분을 위장하지 않고 근처 마법 수정 광산에서 잠자던 고대 정령을 자극해 요새 서편에 마법적 소동을 일으킨 후, 빈틈이 생긴 북문으로 유유히 유령처럼 지나치는 대안도 훌륭한 해법입니다.";
           color = "var(--color-gold-light)";
-        } else if (rollResult >= 8) {
-          message = `🎲 [조건부 합의 - 수치 ${rollResult}]`;
-          subMessage = "대장은 당신의 통과를 꺼림칙해하지만, 뒷돈으로 소액의 통행 비용(Gold)을 살포하자 성문을 슬그머니 묵인하며 열어 주었습니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 단돈 1골드도 소모하기 싫다면, 어둠을 지배하는 기민한 고양이로 환수 변신하여 경비병들의 주위 틈바구니 사이를 소리 소문 없이 빠져나가는 예술적인 무결점 트릭도 존재합니다.";
+        } 
+        else if (rollResult >= 15) {
+          message = `🎲 [안정적인 성공 - 판정값 ${rollResult}] 논리적 명분 설득`;
+          subMessage = "<strong>정치적 법률과 요새 규정의 맹점을 찌르는 탁월한 구두 조항들을 근거로 통과 당위성을 설득해냈습니다.</strong> 대장은 불만 가득한 표정이지만 군말 없이 통행증을 교부합니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 법리적 대화 대신 요새 지하 하수구 깊숙한 곳에서 정화 작업을 하던 고블린 작업반장을 포섭해, 그들이 사용하던 지하 오물 수송 수레에 은밀히 탑승하여 내부로 밀수입되는 선택지도 가능했습니다.";
+          color = "var(--color-gold)";
+        } 
+        else if (rollResult >= 13) {
+          message = `🎲 [상호 타협 - 판정값 ${rollResult}] 타당한 절충안 타결`;
+          subMessage = "<strong>대장은 정문 통과는 요새의 기밀 엄수 조항으로 불가하다고 선언하지만, 성벽 바깥 외곽의 위험한 고지 순찰 조장과 대동하는 조건으로 임시 통행을 수락합니다.</strong><br><br><strong>💡 또 다른 선택지 암시:</strong> 고지 순찰이 불안하다면 성문 앞 광장에서 바드(Bard) 클래스의 유려한 하프 연주로 병사들의 정신을 완전히 홀려 광장 한가운데로 집결시킨 뒤, 비어있는 초소를 도적처럼 비집고 들어가는 전술도 훌륭했을 것입니다.";
           color = "var(--color-parchment)";
-        } else if (rollResult === 1) {
-          message = `🎲 [대실패 - CRITICAL FUMBLE 1]`;
-          subMessage = "당신의 말실수로 인해 경비 대장의 자존심이 최대로 찢겨 나갔습니다! 경보 종소리가 지독하게 울려대며 요새 전체가 긴급 전투 수세로 전환됩니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 대참사로 인한 난관 봉착은 실패가 아닙니다. 이 전면 난전 속에서 요새 천장의 불안정한 불안 지탱 사슬들을 화염 마법으로 격파해 적의 정예 병사들을 압사시킨 뒤 아수라장인 틈을 타 요새 심장부를 조용히 탈환할 위대한 극복 루트가 활성화됩니다.";
-          color = "var(--color-crimson-light)";
-          isCritical = true;
-        } else {
-          message = `🎲 [판정 실패 - 수치 ${rollResult}]`;
-          subMessage = "경비 대장이 냉소적인 웃음을 머금고 전원 무장 집합을 지시합니다. 정면 대화 및 타협의 문이 철저히 차단되었습니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 길이 아예 가로막힌 순간이야말로 가장 지적인 탐색의 시작입니다. 성곽 외곽의 깎아지른 절벽에 숨겨진 낡은 덩굴 줄기들을 정교한 힘으로 등반해 유유히 대장의 머리 위 지붕 통로를 기어가 침공하는 대체 통로가 비로소 드러납니다.";
+        } 
+        else if (rollResult >= 11) {
+          message = `🎲 [간신히 성공 - 판정값 ${rollResult}] 마지못한 묵인`;
+          subMessage = "<strong>당신의 엉성하지만 간절한 눈빛의 거짓말에 대장은 못 이기는 척 고개를 돌립니다.</strong> \"다음 교대 병사들이 오기 전 3분 안에 내 눈앞에서 보이지 않게 사라져라.\"라며 거칠게 경고합니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 만약 대장이 단호했다면 그의 음료에 가벼운 마비 독이나 수면 향료를 타서 10분간 요새 화장실에 감금해 두고 성벽의 도개교 체인을 기계적으로 강제 파괴해 돌파하는 방법이 기다리고 있었습니다.";
           color = "var(--color-parchment-dark)";
+        } 
+        else if (rollResult >= 9) {
+          message = `🎲 [아슬아슬한 대치 - 판정값 ${rollResult}] 탐욕의 거래`;
+          subMessage = "<strong>대장은 눈을 가늘게 뜨며 손가락을 만지작거립니다.</strong> \"이 요새를 지키는 데는 막대한 안보 관리금이 필요하지... 개인 통행 기부금 50골드를 낸다면 내 눈을 잠시 감아줄 수도 있겠군.\"<br><br><strong>💡 또 다른 선택지 암시:</strong> 금화가 너무나 아깝다면, 아끼는 전사 캐릭터의 괴력으로 대장 옆 요새 벽의 노후화된 지탱 지지대를 수동으로 무너뜨려 요새에 구조적 붕괴 비상사태를 일으키고 진입하는 야성적 기지도 가능합니다.";
+          color = "#b3a99a";
+        } 
+        else if (rollResult >= 7) {
+          message = `🎲 [아쉬운 실패 - 판정값 ${rollResult}] 경계심 발동`;
+          subMessage = "<strong>대장이 당신의 얕은 속셈을 기민하게 알아채고 코방귀를 뀝니다.</strong> \"정문 폐쇄! 더 이상 허튼수작 부리지 말고 요새 반경 10마일 밖으로 즉시 퇴거하라!\"<br><br><strong>💡 또 다른 선택지 암시:</strong> 정문이 폐쇄된 것은 끝이 아닙니다. 요새 주변 덤불에서 '말하는 청개구리'를 발견했다면, 그에게 이끼를 먹이고 성 내부의 비밀 환기 밸브 장치로 통하는 정교한 균열 구멍을 안내받아 역침공하는 동화 같은 다른 전개가 열립니다.";
+          color = "#cf3c3c"; // 연한 크림슨
+        } 
+        else if (rollResult >= 5) {
+          message = `🎲 [확실한 실패 - 판정값 ${rollResult}] 정밀 불시 검문`;
+          subMessage = "<strong>거짓말의 꼬리가 밟혀 경비들이 당신을 포위하기 시작합니다.</strong> 무장을 해제당하고 소지품을 샅샅이 압수당하기 직전의 일촉즉발 위기에 봉착합니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 검문관의 손길이 닿기 전, 매혹 마법(Charm Person)을 순간 시전해 대장의 인지 구조를 일시 마비시키거나 '깃털 낙하(Feather Fall)' 물약을 들이켜고 절벽 계곡 아래 흐르는 급류 속으로 과감히 투신해 새로운 동굴로 우회하는 돌파구가 존재합니다.";
+          color = "var(--color-crimson)";
+        } 
+        else if (rollResult >= 3) {
+          message = `🎲 [위험한 수치 - 판정값 ${rollResult}] 밀수꾼으로 오인`;
+          subMessage = "<strong>당신의 소지품과 태도가 마침 지명 수배 중이던 지하 제국 젠타림 밀수 조직의 인상착의와 정확히 일치했습니다!</strong> 요새 전 수비대원에게 구금 지시가 하달됩니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 체포당해 감옥에 끌려가는 것 또한 하나의 위대한 스토리입니다. 지하 요새 고문실 감옥에서 먼저 수감되어 벽에 비밀 탈출용 마법 룬을 새기고 있던 고블린 주술사를 아군으로 영입해 감옥 문을 녹이고 요새를 하단부부터 완전히 초토화시키는 감옥 탈출 루트를 즐길 기회입니다.";
+          color = "var(--color-crimson-dark)";
+        } 
+        else if (rollResult === 2) {
+          message = `🎲 [재앙에 가까운 실패 - 판정값 2] 즉각적인 적대 선포`;
+          subMessage = "<strong>대장이 당신을 적대 세력의 암살 첩보원으로 판단하고 허리춤에서 마법 그레이트소드를 뽑아 들었습니다!</strong> 요새의 비상용 활잡이들이 성벽 위에서 화살 조준을 마쳤습니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 이 피비린내 나는 비상 교전 상황을 역이용해보세요. 정문 앞에 가득 쌓여있던 연금술 화약통(Smokepowder Barrel)을 화염 유도 화살로 저격해 성문째로 날려버리며 경비대를 몰살시키는 전술적 기적이 당신의 손가락 끝에 걸려있습니다.";
+          color = "#7a1414";
+        } 
+        else {
+          message = `🎲 [대실패 - CRITICAL FUMBLE 1] 참사에서 피어나는 역전극`;
+          subMessage = "<strong>당신은 주사위를 던지는 척하며 대장을 안심시키려다 그만 발이 꼬였습니다.</strong> 대장의 하의를 붙잡고 바닥에 함께 넘어지며 대장의 바지를 완전히 벗겨버리는 요새 역사상 전무후무한 모욕적 대참사를 일으켰습니다. 성난 군인들이 소리를 지릅니다.<br><br><strong>💡 또 다른 선택지 암시:</strong> 이 막장 희극 속에서도 모험은 승리합니다! 모든 군인과 대장의 수치심 가득한 시선이 온통 광장의 당신에게 조롱과 분노로 집중된 이 황금 같은 타이밍에, 수풀 속에 클로킹 중이던 동료 로그 아스타리온이 텅 비어버린 요새의 사령관 귀중품 금고를 통째로 털어 유유히 뒤편 북문을 열어젖히는 희대의 아웃로식 역전극이 성립됩니다.";
+          color = "#ff0000";
+          isCritical = true;
         }
 
         diceMsg.textContent = message;
